@@ -1,0 +1,45 @@
+Como sincronizar configurações e extensões do VS Code usando o Settings Sync
+
+#fonte:
+https://danielobara.wordpress.com/2018/12/14/como-sincronizar-configuracoes-e-extensoes-do-vs-code-usando-o-settings-sync/
+
+Como sincronizar configurações e extensões do Visual Studio Code usando o Settings Sync
+
+Normalmente gostamos de deixar nossa IDE com padrões de configuração, atalhos etc… tanto em casa ou no trabalho e seria um saco ter que configurar todos os atalhos do jeito que usamos em todos os ambientes.
+Então hoje sera um tutorial básico de como sincronizar as configurações e extensões do VS Code utilizando a extensão “Settings Sync” do Shan Khan.
+
+Primeiramente abra o Visual Studio Code e em extensões procure por Settings Sync e instale a versão criada pelo Shan Khan.
+
+O que o Sync Settings sincroniza?
+
+Configurações
+Teclas de atalhos
+Launch File
+Snippets
+Extensões do VS Code e as configurações das extensões
+Workspaces
+
+Após instalado, será necessário configurar o ambiente utilizando o Token Gist do Github. Você pode criar um siga os passos mostrados nas figuras abaixo. Certifique-se de selecionar Gist nas opções checkbox.
+
+Vá para Configurações / Configurações do desenvolvedor…
+
+…/ tokens de acesso pessoal / Gerar novo token.
+
+Digite a descrição do “token”, selecione “Gist” e clique em “Generate token”.
+
+Carregar suas configurações pela primeira vez
+Pressione Shift + Alt + U para perguntar ao seu token de acesso à conta do GitHub.
+Digite “> Sync” na Paleta de Comandos para fazer o download / upload do pedido
+Isso abrirá automaticamente a página de configurações do GitHub, permitindo que você gere um novo token para o aplicativo, conforme explicado na seção anterior. Este token permitirá que a extensão crie gists.
+Digite o token do GitHub na janela e clique em enter.
+
+Faça o download das suas configurações
+Pressione Shift + Alt + D para perguntar ao seu GitHub Gist ID.
+Digite “> Sync” na Paleta de Comandos para fazer o download / upload do pedido
+Digite seu token do GitHub.
+Digite o token do GitHub na janela e clique em enter.
+
+Redefinir Configurações de Token / Gist
+Digite “> Sync” na Paleta de Comandos e selecione Reset to Token and Gist Settings
+Para outras configurações da extensão use a paleta de comandos e digite Sync e diversas outras opções aparecerão.
+Isso é tudo pessoal!

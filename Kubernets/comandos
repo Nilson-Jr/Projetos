@@ -1,0 +1,57 @@
+sudo kubectl cluster-info
+
+sudo systemctl daemon-reload
+
+sudo systemctl restart docker
+
+kubectl get services
+
+kubectl describe pod -n default webserver-nginx
+
+sudo kubectl get pods --all-namespaces
+
+kubectl get ns
+
+sudo kubectl expose deploy webserver-nginx --port 80 --target-port 80 --type NodePort
+
+sudo kubectl -n kube-system edit configmap coredns
+
+kubectl get ep kube-dns --namespace=kube-systemctl
+
+sudo kubectl get svc --namespace=kube-system
+
+kubectl get ep kube-dns --namespace=kube-system
+
+sudo kubectl get svc --namespace=kube-system
+
+kubectl get pods --namespace=kube-system -l k8s-app=kube-dns
+
+sudo kubectl get pods --namespace=kube-system -l k8s-app=kube-dns
+
+sudo kubectl exec -ti webserver-nginx -- nslookup kubernetes.default
+
+kubectl exec -it webserver-nginx -- /bin/bash
+
+kubectl get service webserver-nginx -o json
+
+nslookup kubernetes
+
+nslookup kubernetes.defaults
+
+sudo systemctl restart docker
+
+sudo systemctl daemon-reload
+
+kubectl describe pod -n default webserver-nginx
+
+sudo kubectl get pods --all-namespaces
+
+kubectl get ep kube-dns --namespace=kube-system
+
+sudo kubectl get svc --namespace=kube-system
+
+kubectl get pods --namespace=kube-system -l k8s-app=kube-dns
+
+sudo kubectl delete deployment webserver-nginx
+
+sudo kubectl create deployment meunginx --image=nginx

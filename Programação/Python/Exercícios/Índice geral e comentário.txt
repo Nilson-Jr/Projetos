@@ -1,0 +1,39 @@
+#Comparações múltiplas:
+-->
+aula 10
+<--
+
+#Estrutura de decisão
+-->
+aula 09
+. usando somente "if" no código ele continua comparando os outros "if", ainda que a condição anterior seja verdadeira;
+. usando "elif" após o "if" este "para" quando é verdadeiro;
+<--
+
+#Ciclo de repetição
+-->
+aula 13
+. declaração de variável antes do ciclo "while";
+
+aula 14
+. nasted(bagunçado) "while" loops;
+
+<--
+
+#Atalhos
+-->
+aula 15
+. tornam os programas mais compactos e fáceis de escrever;
+. atribuir a uma variável ela mesma(+, -, *, /, %, // ou **) um outro valor;
+. operador especial "%" a ser utilizado dentro das aspas duplas na função "print";
+. operador especial com duas casas decimais depois do ponto: %.2f;
+. operador especial ocupando no máximo 6 caracteres na tela: %6.2f; E pra quê? Assim o resultado
+na tela sai melhor formatado;
+
+aula 22
+. operadores especiais você pode usar %i ou %d para inteiros, %f para float(reais), %g para notação científica;
+. o %g detecta quais são os algarismos significativos;
+. por padrão o %f imprime seis casas decimais após o ponto;
+. por padrão o %g detecta as casas decimais relevante e imprime o resultado.
+<--
+

@@ -1,0 +1,40 @@
+#Tutorial de utilização
+
+#Renomear um arquivo
+-->
+f2
+<--
+
+#Como instalar extensões:
+-->
+Install
+Open Visual Studio Code
+Press Ctrl+P to open the Quick Open dialog
+Type ext install markdownlint to find the extension
+Click the Install button, then the Enable button
+OR
+
+Press Ctrl+Shift+X to open the Extensions tab
+Type markdownlint to find the extension
+Click the Install button, then the Enable button
+OR
+
+Open a command-line prompt
+Run code --install-extension DavidAnson.vscode-markdownlint
+<--
+
+#Mostrar todos os comandos:
+-->
+Ctrl + Shift + p
+<--
+
+#Ir para o arquivo
+-->
+Ctrl + P
+<--
+
+#Localizar um arquivo
+-->
+Ctrl + Shift + f
+<--
+

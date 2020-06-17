@@ -1,0 +1,772 @@
+Kubernetes
+
+###Máquina hospedeira
+OS: ubuntu 20.04
+Sistema de inicialização: systemd
+
+Máquina: Dell InspironONE 2330 - F520
+Hadware: RAM: 6GB; HD: 2TB, GPU: AMD RAdeon HD 7650A de 1GB
+
+###Ferramentas utilizadas
+Vagrant
+Virtualbox
+Ansible
+Docker(instalado via script Ansible)
+
+#No computador físico hospedeiro
+#Instale o vagrant
+-->
+
+<--
+
+#Instale o virtualbox
+-->
+
+<--
+
+#Instale o ansible
+-->
+
+<--
+
+#Crie um diretório para o projeto
+-->
+mkdir Documents/Kubernetes
+mkdir Documents/Kubernetes/Ubuntu16_master/
+mkdir Documents/Kubernetes/Ubuntu16_worker1/
+mkdir Documents/Kubernetes/kube-cluster
+<--
+
+#Crie um par de chaves ssh:
+-->
+ssh-keygen -t rsa
+
+    ##Escolha um local para guardar o par de chaves;
+    -->
+    /home/nilson/.ssh/id_rsa
+    <--
+<--
+
+###Vamos começar pelo vagrant
+#Vagrant
+#Acesse o site do projeto e escolha a imagem: ubuntu/xenial64
+https://app.vagrantup.com/boxes/search
+
+#Começando pela máquina virtual master:
+-->
+cd Documents/Kubernetes/Ubuntu16_master/
+
+vagrant init ubuntu/xenial64
+
+Obs.: o comando acima gera o arquivo de configuração Vagrantfile
+<--
+
+#Configue o arquivo Vagrantfile
+-->
+sudo gedit Vagrantfile
+
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://vagrantcloud.com/search.
+  config.vm.box = "ubuntu/xenial64"
+  config.vm.hostname = "master"
+
+  # Create a private network, which allows host-only access to the machine
+  # using a specific IP.
+    config.vm.network "private_network", ip: "10.0.2.16"
+
+  # Create a public network, which generally matched to bridged network.
+  # Bridged networks make the machine appear as another physical device on
+  # your network.
+    config.vm.network "public_network"
+  # Provider-specific configuration so you can fine-tune various
+  # backing providers for Vagrant. These expose provider-specific options.
+  # Example for VirtualBox:
+  #
+    config.vm.provider "virtualbox" do |vb|
+  #   # Display the VirtualBox GUI when booting the machine
+  #   vb.gui = true
+  #
+  #   # Customize the amount of memory on the VM:
+      vb.memory = "1536"
+      vb.cpus = 2
+    end
+  # View the documentation for the provider you are using for more
+  # information on available options.
+end
+<--
+
+#Levantando a máquina virtual master:
+vagrant up
+
+Obs.: Neste momento, o vagrant vai na internet e baixa a imagem escolhida.
+
+#Continuando agora com a máquina virutal worker1:
+-->
+cd Documents/Kubernetes/Ubuntu16_worker1/
+
+vagrant init ubuntu/xenial64
+
+Obs.: o comando acima gera o arquivo de configuração Vagrantfile
+<--
+
+#Configue o arquivo Vagrantfile
+-->
+sudo gedit Vagrantfile
+
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://vagrantcloud.com/search.
+  config.vm.box = "ubuntu/xenial64"
+  config.vm.hostname = "worker1"
+
+  # Disable automatic box update checking. If you disable this, then
+  # boxes will only be checked for updates when the user runs
+  # `vagrant box outdated`. This is not recommended.
+  # config.vm.box_check_update = false
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine. In the example below,
+  # accessing "localhost:8080" will access port 80 on the guest machine.
+  # NOTE: This will enable public access to the opened port
+  # config.vm.network "forwarded_port", guest: 80, host: 8080
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine and only allow access
+  # via 127.0.0.1 to disable public access
+  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+
+  # Create a private network, which allows host-only access to the machine
+  # using a specific IP.
+    config.vm.network "private_network", ip: "10.0.2.17"
+
+  # Create a public network, which generally matched to bridged network.
+  # Bridged networks make the machine appear as another physical device on
+  # your network.
+    config.vm.network "public_network"
+  # Provider-specific configuration so you can fine-tune various
+  # backing providers for Vagrant. These expose provider-specific options.
+  # Example for VirtualBox:
+  #
+    config.vm.provider "virtualbox" do |vb|
+  #   # Display the VirtualBox GUI when booting the machine
+  #   vb.gui = true
+  #
+  #   #Customize the amount of memory on the VM:
+      vb.memory = "1536"
+    end
+  #
+  # View the documentation for the provider you are using for more
+  # information on available options.
+end
+<--
+
+#Levantando a máquina virtual worker1:
+-->
+vagrant up
+
+Obs.: Neste momento, o vagrant vai na internet e baixa a imagem escolhida.
+<--
+
+#Ainda no computador host:
+#Teste de ping na máquina virtual master:
+-->
+ping 10.0.2.16
+PING 10.0.2.16 (10.0.2.16) 56(84) bytes of data.
+64 bytes from 10.0.2.16: icmp_seq=1 ttl=64 time=1.13 ms
+64 bytes from 10.0.2.16: icmp_seq=2 ttl=64 time=0.386 ms
+<--
+
+#Teste de ping na máquina virtual worker1:
+-->
+ping 10.0.2.17
+64 bytes from 10.0.2.17: icmp_seq=1 ttl=64 time=0.624 ms
+64 bytes from 10.0.2.17: icmp_seq=2 ttl=64 time=0.545 ms
+64 bytes from 10.0.2.17: icmp_seq=3 ttl=64 time=0.741 ms
+<--
+
+#Entrando na máquina master:
+-->
+vagrant ssh
+<--
+
+#Teste de ping na máquina host:
+-->
+ping 192.168.0.2
+PING 192.168.0.2 (192.168.0.2) 56(84) bytes of data.
+64 bytes from 192.168.0.2: icmp_seq=1 ttl=64 time=1.10 ms
+64 bytes from 192.168.0.2: icmp_seq=2 ttl=64 time=0.359 ms
+64 bytes from 192.168.0.2: icmp_seq=3 ttl=64 time=0.280 ms
+<--
+#Teste de ping na máquina virtual worker1
+-->
+ping 10.0.2.17
+PING 10.0.2.17 (10.0.2.17) 56(84) bytes of data.
+64 bytes from 10.0.2.17: icmp_seq=1 ttl=64 time=0.647 ms
+64 bytes from 10.0.2.17: icmp_seq=2 ttl=64 time=0.670 ms
+64 bytes from 10.0.2.17: icmp_seq=3 ttl=64 time=0.422 ms
+<--
+
+#Uma vez dentro da máquina virtual master:
+#Ir para o root
+-->
+sudo su
+<--
+#Atualizar os repositórios
+-->
+apt update && apt upgrade
+<--
+
+#Ver as interfaces de rede
+-->
+ip addr show
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 02:7c:3b:f4:17:68 brd ff:ff:ff:ff:ff:ff
+    inet 10.0.2.15/24 brd 10.0.2.255 scope global enp0s3
+       valid_lft forever preferred_lft forever
+    inet6 fe80::7c:3bff:fef4:1768/64 scope link 
+       valid_lft forever preferred_lft forever
+3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:b2:8a:f4 brd ff:ff:ff:ff:ff:ff
+    inet 10.0.2.16/24 brd 10.0.2.255 scope global enp0s8
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:feb2:8af4/64 scope link 
+       valid_lft forever preferred_lft forever
+4: enp0s9: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:62:17:97 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.0.52/24 brd 192.168.0.255 scope global enp0s9
+       valid_lft forever preferred_lft forever
+    inet6 2804:14c:5989:9857:a00:27ff:fe62:1797/64 scope global mngtmpaddr dynamic 
+       valid_lft 3600sec preferred_lft 3600sec
+    inet6 fe80::a00:27ff:fe62:1797/64 scope link 
+       valid_lft forever preferred_lft forever
+<--
+
+#Algumas considerações sobre a saída do comando acima
+-->
+2: enp0s3: ip setado pelo virtualbox
+3: enp0s8: ip setado no arquivo de configuração Vagrantfile
+4: enp0s9: ip da rede local, setado pelo meu servidor de DHCP
+<--
+
+#Considerações sobre rotas
+#Na configuração do vagrant eu criei duas redes, uma privada e uma pública. A privada na mesma rede do virtual box e a pública na rede local.
+#Assim acredito que não será preciso criar rotas entre as máquinas virtuais e o host físico e nem entre ambas.
+
+#Crie a senha de root da máquina virtual master:
+-->
+passwd
+senha:
+Confirme senha:
+<--
+
+#Continuando...
+
+#Configurar o arquivo de configuração do serviço ssh: /etc/ssh/sshd_conf
+-->
+vi /etc/ssh/sshd_config
+
+# Package generated configuration file
+# See the sshd_config(5) manpage for details
+
+# What ports, IPs and protocols we listen for
+Port 22
+# Use these options to restrict which interfaces/protocols sshd will bind to
+#ListenAddress ::
+#ListenAddress 0.0.0.0
+Protocol 2
+# HostKeys for protocol version 2
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_dsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+#Privilege Separation is turned on for security
+UsePrivilegeSeparation yes
+
+# Lifetime and size of ephemeral version 1 server key
+KeyRegenerationInterval 3600
+ServerKeyBits 1024
+
+# Logging
+SyslogFacility AUTH
+LogLevel INFO
+
+# Authentication:
+LoginGraceTime 120
+PermitRootLogin yes
+StrictModes yes
+
+RSAAuthentication yes
+PubkeyAuthentication yes
+#AuthorizedKeysFile     %h/.ssh/authorized_keys
+
+# Don't read the user's ~/.rhosts and ~/.shosts files
+IgnoreRhosts yes
+# For this to work you will also need host keys in /etc/ssh_known_hosts
+RhostsRSAAuthentication no
+# similar for protocol version 2
+HostbasedAuthentication no
+# Uncomment if you don't trust ~/.ssh/known_hosts for RhostsRSAAuthentication
+#IgnoreUserKnownHosts yes
+
+# To enable empty passwords, change to yes (NOT RECOMMENDED)
+PermitEmptyPasswords no
+
+# Change to yes to enable challenge-response passwords (beware issues with
+# some PAM modules and threads)
+ChallengeResponseAuthentication no
+
+# Change to no to disable tunnelled clear text passwords
+PasswordAuthentication yes
+
+# Kerberos options
+#KerberosAuthentication no
+#KerberosGetAFSToken no
+#KerberosOrLocalPasswd yes
+#KerberosTicketCleanup yes
+
+# GSSAPI options
+#GSSAPIAuthentication no
+#GSSAPICleanupCredentials yes
+
+X11Forwarding yes
+X11DisplayOffset 10
+PrintMotd no
+PrintLastLog yes
+TCPKeepAlive yes
+#UseLogin no
+
+#MaxStartups 10:30:60
+#Banner /etc/issue.net
+
+# Allow client to pass locale environment variables
+AcceptEnv LANG LC_*
+
+Subsystem sftp /usr/lib/openssh/sftp-server
+
+# Set this to 'yes' to enable PAM authentication, account processing,
+# and session processing. If this is enabled, PAM authentication will
+# be allowed through the ChallengeResponseAuthentication and
+# PasswordAuthentication.  Depending on your PAM configuration,
+# PAM authentication via ChallengeResponseAuthentication may bypass
+# the setting of "PermitRootLogin without-password".
+# If you just want the PAM account and session checks to run without
+# PAM authentication, then enable this but set PasswordAuthentication
+# and ChallengeResponseAuthentication to 'no'.
+UsePAM yes
+<--
+
+#Volte para a máquina host ou abra outro terminal
+#Acessando a máquina virtual master com ssh:
+-->
+ssh -p 22 root@10.0.2.16
+
+Obs.: Neste momento o ssh da máquina hospedeira pergunta se você aceita as chaves públicas da máquina virutal master. Responda que sim.
+A senha é solicitada e as chaves públicas da máquina virtual master são copiadas para o arquivo /home/nilson/.ssh/known_hosts
+
+    ##Dando uma olhada no arquivo known_hots
+    --->
+    cat .ssh/known_hosts
+    |1|xxxxxxxxxxxxxxxxxxx0z41Qwno=|xxxxxxxxxxxxxxxx2jmgDii2nRw= ecdsa-sha2-nistp256 xxxxxxxxxxxxxxxxxxxxxxxxxHAyNTYAAAAIbmlzdHAyNTYAAABBBMxxxxxxxxxxxxxxxxxvGE/fm2QC8yh5ZEt8fuhp2PingC/
+    HvbnakJRzfQNZGz95N1rLBB0KmQt+uHORncx08qg=
+    |1|xxxxxxxxxxxxxxxxxxxxcXr/IQo=|h9M7s59J/tFEo4cwGHMZm0qWJNo= ecdsa-sha2-nistp256
+    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxTYAAAAIbmlzdHAyNTYAAABBBMnkI0b1G3IArMyJ7vTBUAXjttxrEp1vhwJtxxxxxxxxxxxxxxxxxxxxxxxxxj8feJ7FauDRpA1ZB209cl5S22w=
+    <--
+<---
+
+#Ainda dentro da máquina hospedeira, copie a sua chave privada para a máquina virtual master:
+-->
+ssh-copy-id root@10.0.2.16
+<--
+
+
+#Entrando na máquina worker1:
+-->
+vagrant ssh
+<--
+
+#Uma vez dentro da máquina virtual worker1:
+#Ir para o root
+-->
+sudo su
+<--
+#Atualizar os repositórios
+-->
+apt update && apt upgrade
+<--
+
+#Teste de ping na máquina host:
+-->
+ping 192.168.0.2
+PING 192.168.0.2 (192.168.0.2) 56(84) bytes of data.
+64 bytes from 192.168.0.2: icmp_seq=1 ttl=64 time=0.512 ms
+64 bytes from 192.168.0.2: icmp_seq=2 ttl=64 time=0.332 ms
+64 bytes from 192.168.0.2: icmp_seq=3 ttl=64 time=0.371 ms
+<--
+
+#Teste de ping na máquina virtual master:
+-->
+ping 10.0.2.16
+PING 10.0.2.16 (10.0.2.16) 56(84) bytes of data.
+64 bytes from 10.0.2.16: icmp_seq=1 ttl=64 time=0.631 ms
+64 bytes from 10.0.2.16: icmp_seq=2 ttl=64 time=0.656 ms
+64 bytes from 10.0.2.16: icmp_seq=3 ttl=64 time=0.674 ms
+<--
+
+#Crie a senha de root da máquina virtual worker1:
+-->
+passwd
+senha:
+Confirme senha:
+<--
+
+#Configurar o arquivo de configuração do serviço ssh: /etc/ssh/sshd_conf
+-->
+vi /etc/ssh/sshd_config
+# Package generated configuration file
+# See the sshd_config(5) manpage for details
+
+# What ports, IPs and protocols we listen for
+Port 22
+# Use these options to restrict which interfaces/protocols sshd will bind to
+#ListenAddress ::
+#ListenAddress 0.0.0.0
+Protocol 2
+# HostKeys for protocol version 2
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_dsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+#Privilege Separation is turned on for security
+UsePrivilegeSeparation yes
+
+# Lifetime and size of ephemeral version 1 server key
+KeyRegenerationInterval 3600
+ServerKeyBits 1024
+
+# Logging
+SyslogFacility AUTH
+LogLevel INFO
+
+# Authentication:
+LoginGraceTime 120
+PermitRootLogin yes
+StrictModes yes
+
+RSAAuthentication yes
+PubkeyAuthentication yes
+#AuthorizedKeysFile     %h/.ssh/authorized_keys
+
+# Don't read the user's ~/.rhosts and ~/.shosts files
+IgnoreRhosts yes
+# For this to work you will also need host keys in /etc/ssh_known_hosts
+RhostsRSAAuthentication no
+# similar for protocol version 2
+HostbasedAuthentication no
+# Uncomment if you don't trust ~/.ssh/known_hosts for RhostsRSAAuthentication
+#IgnoreUserKnownHosts yes
+
+# To enable empty passwords, change to yes (NOT RECOMMENDED)
+PermitEmptyPasswords no
+
+# Change to yes to enable challenge-response passwords (beware issues with
+# some PAM modules and threads)
+ChallengeResponseAuthentication no
+
+# Change to no to disable tunnelled clear text passwords
+PasswordAuthentication yes
+# Kerberos options
+#KerberosAuthentication no
+#KerberosGetAFSToken no
+#KerberosOrLocalPasswd yes
+#KerberosTicketCleanup yes
+
+# GSSAPI options
+#GSSAPIAuthentication no
+#GSSAPICleanupCredentials yes
+
+X11Forwarding yes
+X11DisplayOffset 10
+PrintMotd no
+PrintLastLog yes
+TCPKeepAlive yes
+#UseLogin no
+
+#MaxStartups 10:30:60
+#Banner /etc/issue.net
+
+# Allow client to pass locale environment variables
+AcceptEnv LANG LC_*
+
+Subsystem sftp /usr/lib/openssh/sftp-server
+
+# Set this to 'yes' to enable PAM authentication, account processing,
+# and session processing. If this is enabled, PAM authentication will
+# be allowed through the ChallengeResponseAuthentication and
+# PasswordAuthentication.  Depending on your PAM configuration,
+# PAM authentication via ChallengeResponseAuthentication may bypass
+# the setting of "PermitRootLogin without-password".
+# If you just want the PAM account and session checks to run without
+# PAM authentication, then enable this but set PasswordAuthentication
+# and ChallengeResponseAuthentication to 'no'.
+UsePAM yes
+<--
+
+#Volte para a máquina hospedeira ou abra outro terminal
+#Acessando a máquina virtual cluster1 com ssh:
+-->
+ssh -p 22 root@10.0.2.17
+
+Obs.: Neste momento o ssh da máquina hospedeira pergunta se você aceita as chaves públicas da máquina virutal master. Responda que sim.
+A senha é solicitada e as chaves públicas da máquina virtual master são copiadas para o arquivo /home/nilson/.ssh/known_hosts
+
+    ##Dando uma olhada no arquivo known_hots
+    --->
+    cat .ssh/known_hosts
+    |1|xxxxxxxxxxxxxxxxxxx0z41Qwno=|xxxxxxxxxxxxxxxx2jmgDii2nRw= ecdsa-sha2-nistp256 xxxxxxxxxxxxxxxxxxxxxxxxxHAyNTYAAAAIbmlzdHAyNTYAAABBBMxxxxxxxxxxxxxxxxxvGE/fm2QC8yh5ZEt8fuhp2PingC/
+    HvbnakJRzfQNZGz95N1rLBB0KmQt+uHORncx08qg=
+    |1|xxxxxxxxxxxxxxxxxxxxcXr/IQo=|h9M7s59J/tFEo4cwGHMZm0qWJNo= ecdsa-sha2-nistp256
+    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxTYAAAAIbmlzdHAyNTYAAABBBMnkI0b1G3IArMyJ7vTBUAXjttxrEp1vhwJtxxxxxxxxxxxxxxxxxxxxxxxxxj8feJ7FauDRpA1ZB209cl5S22w=
+    <--
+<---
+
+#Ainda dentro da máquina hospedeira, copie a sua chave privada para a máquina virtual worker1:
+-->
+ssh-copy-id root@10.0.2.17
+<--
+
+###A parte do Vagrant acaba aqui.
+
+###Continuando agora com o Ansible
+#Criando o arquivo hosts:
+-->
+gedit hosts
+
+[masters]
+master ansible_host=10.0.2.16 ansible_user=root
+
+[workers]
+worker1 ansible_host=10.0.2.17 ansible_user=root
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+<--
+
+#Configurando o arquivo initial.yml
+-->
+gedit initial.yml
+- hosts: all
+  become: yes
+  tasks:
+    - name: create the 'kubert' user
+      user: name=kubert append=yes state=present createhome=yes shell=/bin/bash
+
+    - name: allow 'kubert' to have passwordless sudo
+      lineinfile:
+        dest: /etc/sudoers
+        line: 'kubert ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
+
+    - name: set up authorized keys for the kubert user
+      authorized_key: user=kubert key="{{item}}"
+      with_file:
+        - ~/.ssh/id_rsa.pub
+<--
+
+#Criando o arquivo kube-dependencies.yml
+-->
+- hosts: all
+  become: yes
+  tasks:
+   - name: install Docker
+     apt:
+       name: docker.io
+       state: present
+       update_cache: true
+
+   - name: install APT Transport HTTPS
+     apt:
+       name: apt-transport-https
+       state: present
+
+   - name: add Kubernetes apt-key
+     apt_key:
+       url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+       state: present
+
+   - name: add Kubernetes' APT repository
+     apt_repository:
+      repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+      state: present
+      filename: 'kubernetes'
+
+   - name: install kubelet
+     apt:
+       name: kubelet
+       state: present
+       update_cache: true
+
+   - name: install kubeadm
+     apt:
+       name: kubeadm
+       state: present
+
+- hosts: master
+  become: yes
+  tasks:
+   - name: install kubectl
+     apt:
+       name: kubectl
+       state: present
+<--
+
+#Criando o arquivo master.yml
+-->
+- hosts: master
+  become: yes
+  tasks:
+    - name: initialize the cluster
+      shell: kubeadm init --apiserver-advertise-address 10.0.2.16 --pod-network-cidr=10.244.0.0/16 >> cluster_initialized.txt
+      args:
+        chdir: $HOME
+        creates: cluster_initialized.txt
+
+    - name: create .kube directory
+      become: yes
+      become_user: kubert
+      file:
+        path: $HOME/.kube
+        state: directory
+        mode: 0755
+
+    - name: copy admin.conf to user's kube config
+      copy:
+        src: /etc/kubernetes/admin.conf
+        dest: /home/kubert/.kube/config
+        remote_src: yes
+        owner: kubert
+
+    - name: install Pod network
+      become: yes
+      become_user: kubert
+      shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml >> pod_network_setup.txt
+      args:
+        chdir: $HOME
+        creates: pod_network_setup.txt
+<--
+
+#Criando o arquivo workers.yml
+-->
+- hosts: master
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: get join command
+      shell: kubeadm token create --print-join-command
+      register: join_command_raw
+
+    - name: set join command
+      set_fact:
+        join_command: "{{ join_command_raw.stdout_lines[0] }}"
+
+
+- hosts: workers
+  become: yes
+  tasks:
+    - name: join cluster
+      shell: "{{ hostvars['master'].join_command }} >> node_joined.txt"
+      args:
+        chdir: $HOME
+        creates: node_joined.txt
+<--
+
+#Criando o cluster Kubernetes com os scripts Ansible
+-->
+ansible-playbook initial.yml
+
+ansible-playbook kube-dependencies.yml
+
+ansible-playbook master.yml
+
+ansible-playbook workers.yml
+<--
+
+#Acessando a máquina virutal master com o usuário criado pelo script Ansible:
+-->
+ssh kubert@10.0.2.16
+<--
+
+#Uma vez dentro do master com o usuário kubert:
+#Para ver os nós do cluster
+-->
+kubectl get nodes
+NAME      STATUS   ROLES    AGE   VERSION
+master    Ready    master   13d   v1.18.2
+worker1   Ready    <none>   13d   v1.18.2
+<--
+
+#Para ver os pods com o nginx rodando
+-->
+kubectl get pods
+NAME                        READY   STATUS    RESTARTS   AGE
+meunginx                    1/1     Running   1          11d
+meunginx-6cd59564d6-zk56t   1/1     Running   1          11d
+<--
+
+#Para ver os services
+kubectl get services
+AME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP        13d
+meunginx     NodePort    10.105.108.66   <none>        80:31409/TCP   11d
+
+#Para voltar para o computador hospedeiro
+-->
+exit
+<--
+
+#Para desligar a máquina virtual master:
+-->
+cd /home/nilson/Documents/Ubuntu16_master/
+
+vagrant halt
+<--
+
+#Para desligar a máquina virtual worker1:
+-->
+cd /home/nilson/Documents/Ubuntu16_worker1/
+
+vagrant halt
+<--
+
+###A parte do Ansible termina aqui.
+
+
+

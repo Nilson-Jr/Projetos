@@ -1,0 +1,244 @@
+#Este tutorial pressupõe que o programa git já está instalado no seu computador.
+#Pressupõe ainda que o diretório do projeto já conterá vários diretórios e arquivos.
+#Pressupõe, finalmente, que você já possua um repositório remoto criado.
+
+#Informações sobre o sistema:
+- Sistema operacional: Ubuntu 20.04
+- Máquina:
+
+#Configurando o usuário e o e-mail
+-->
+git config --global user.name "Nilson-Jr"
+<--
+
+-->
+git config --global user.email "njuniornet@gmail.com"
+<--
+
+Obs.: após esses dois comando o git criará, na home do usuário, o diretório chamado .gitconfig
+
+-->
+ls -lh
+
+otal 212
+drwxr-xr-x 38 nilson nilson  4096 jun 17 10:42  .
+drwxr-xr-x  4 root   root    4096 mai  6 20:41  ..
+drwxr-xr-x  6 nilson nilson  4096 nov 13  2019  .aegisub
+drwxrwxr-x  4 nilson nilson  4096 mai  8 08:18  .ansible
+-rw-------  1 nilson nilson 13972 jun 16 18:01  .bash_history
+drwxr-x--- 35 nilson nilson  4096 jun 15 18:34  .cache
+drwxr-x--- 37 nilson nilson  4096 jun 16 10:48  .config
+drwxr-xr-x  2 nilson nilson  4096 mai 21 11:05  Desktop
+<--
+
+-->
+cd ~
+
+cat .gitconfig 
+[user]
+	name = Nilson-Jr
+	email = njuniornet@gmail.com
+<--
+#O diterório a ser versionado é o /home/nilson/Documents/Projetos.
+#Git Bash Here
+-->
+cd /home/nilson/Documents/Projetos
+<--
+
+-->
+git init
+
+Initialized empty Git repository in /home/nilson/Documents/Projetos/.git/
+
+Obs.: este comando cria o diretório oculto .git
+<--
+
+#Dando uma olhada no conteúdo
+-->
+cd .git
+
+ls -lh
+
+total 32K
+drwxrwxr-x 2 nilson nilson 4,0K jun 17 09:57 branches
+-rw-rw-r-- 1 nilson nilson   92 jun 17 09:57 config
+-rw-rw-r-- 1 nilson nilson   73 jun 17 09:57 description
+-rw-rw-r-- 1 nilson nilson   23 jun 17 09:57 HEAD
+drwxrwxr-x 2 nilson nilson 4,0K jun 17 09:57 hooks
+drwxrwxr-x 2 nilson nilson 4,0K jun 17 09:57 info
+drwxrwxr-x 4 nilson nilson 4,0K jun 17 09:57 objects
+drwxrwxr-x 4 nilson nilson 4,0K jun 17 09:57 refs
+
+Obs.:Uma pasta importante na estrutura criada é a pastas "objetcs". É nesta pasta de objetos que o git vai criar o "Grafo de Commits".
+
+- o git cria uma espécie de "container" onde devemos adicionar todos os arquivos e pastas que foram criados ou modificados. Usa-se o "git add" para fazer isso.
+
+- o comando "git status" verifica o que está armazenado no container;
+
+- o comando "git commit" identifica e armazena este container no repositório local. O .git é este repositório.
+
+- assim, um repositório tem vários containers.
+<--
+
+
+#Dando uma olhada inicial de como foi criado o nosso Projeto.
+-->
+git status
+
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	Electron/
+	GitHub/
+	Kubernets/
+	"Programa\303\247\303\243o/"
+	VSC/
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+#Obs.: a mensagem/saída do comando "git status" indica que há arquivos que ainda não foram, mas precisam ser, adicionados ao meu container.
+<--
+
+#Adicionando os arquivos ao container. Isto pode ser feito arquivo por arquivo ou todos de uma vez.
+#Para um arquivo por vez:
+-->
+git add <nome-do-arquivo>
+<--
+
+#Para todos os arquivos de uma vez.
+-->
+git add .
+
+Obs.: os diretórios e arquivos aparecem em cor verde. Ou seja, foram colocados dentro do container.
+<--
+
+#Dê uma olhada novamente no status do seu Projeto
+-->
+git status
+
+Obs.: tudo aparece em cor verde e está ok.
+Isto significa que todos os diretório e arquivos estão agora dentro do container.
+<--
+
+#Vamos agora identificar(etiquetar) esse container e armazenar o mesmo no repositório local.
+-->
+git commit -m "Criado o projeto"
+<--
+
+#Usando o comando git status novamente
+-->
+git status
+
+On branch master
+nothing to commit, working tree clean
+<--
+
+#Gerenciando os arquivos criado até aqui.
+-->
+git log
+
+commit e5dd2649f4b60939fffb82de8ee7b0928d61aa16 (HEAD -> master)
+Author: Nilson-Jr <njuniornet@gmail.com>
+Date:   Wed Jun 17 11:16:48 2020 -0300
+
+    Criado o projeto
+
+Obs.: Observe que a saída deste comando mostra o número do commit gerado no comando anterior.
+Mostra ainda outras informações como o comentário que eu fiz ao commitar o projeto.
+<--
+
+#Visualizando as mesmas informações dadas pelo comando git log, porém em uma linha só.
+-->
+git log --oneline
+
+e5dd264 (HEAD -> master) Criado o projeto
+<--
+
+#Tudo certo! Agora vamos fazer a primeira cópia do repositório local para o github.
+
+#verificando se há um repositório remoto.
+-->
+git remote
+
+Obs.:o comando não retornou nada. Isto quer dizer que o projeto está armazenado apenas localmente.
+<--
+
+#No github, crie uma conta. O gitlab também pode ser utilizado.
+
+#No github, crie um novo repositório ou um novo projeto projeto.
+Obs.: Neste passo, caso você já tenha outros projetos criados anteriormente, para o seu "novo" projeto não marque a opção README.
+Ao fazer isto o meu push não funcionava.
+
+#Ao criar um novo projeto no github, caso esteja tudo correto, a mensagem após criar o novo projeto será a seguinte:
+-->
+Quick setup — if you’ve done this kind of thing before
+
+Get started by creating a new file or uploading an existing file. We recommend every repository include a README, LICENSE, and .gitignore.
+
+…or create a new repository on the command line
+echo "# Projetos" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/Nilson-Jr/Projetos.git
+git push -u origin master
+                
+…or push an existing repository from the command line
+git remote add origin https://github.com/Nilson-Jr/Projetos.git
+git push -u origin master
+
+…or import code from another repository
+You can initialize this repository with code from a Subversion, Mercurial, or TFS project.
+
+Obs.: A informação acima(página do projeto), fica como que "esperando" você fazer o primeiro push. Enquanto isto não for feito a página
+do projeto não será atualizada, ou seja, não há "neste momento" arquivos disponíveis.
+<--
+
+#Criando, no host local, o primeiro repositório remoto
+-->
+git remote add origin https://github.com/Nilson-Jr/Projetos.git
+<--
+
+#Verificando se, na máquina local, foi criado o repositório remoto.
+-->
+git remote
+
+origin
+
+Obs.: Sim, foi criado!
+<--
+
+#Para mais detalhes deste repositório remotos
+-->
+git remote -v
+
+origin	https://github.com/Nilson-Jr/Projetos.git (fetch)
+origin	https://github.com/Nilson-Jr/Projetos.git (push)
+<--
+
+#Finalmente, fazendo o primeiro push(envio) de seu projeto.
+-->
+git push -u origin master
+
+Username for 'https://github.com': Nilson-Jr
+Password for 'https://Nilson-Jr@github.com': 
+Enumerating objects: 11272, done.
+Counting objects: 100% (11272/11272), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (1456/1456), done.
+Writing objects:   0% (18/11272),
+<--
+
+#Problemas com arquivos grandes
+#Tive problemas com arquivos grandes e foi preciso removê-los do projeto
+-->
+git rm Programação/Java/Apache-NetBeans-11.3-bin-linux-x64.sh
+<--
+
+-->
+git rm Programação/Java/jdk-11.0.7_doc-all/ -r
+<--
+

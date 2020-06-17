@@ -1,0 +1,16 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: create the 'kubert' user
+      user: name=kubert append=yes state=present createhome=yes shell=/bin/bash
+
+    - name: allow 'kubert' to have passwordless sudo
+      lineinfile:
+        dest: /etc/sudoers
+        line: 'kubert ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
+
+    - name: set up authorized keys for the kubert user
+      authorized_key: user=kubert key="{{item}}"
+      with_file:
+        - ~/.ssh/id_rsa.pub

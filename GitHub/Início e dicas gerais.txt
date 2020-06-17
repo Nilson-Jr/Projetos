@@ -230,16 +230,61 @@ Enumerating objects: 11272, done.
 Counting objects: 100% (11272/11272), done.
 Delta compression using up to 4 threads
 Compressing objects: 100% (1456/1456), done.
+Writing objects:   0% (18/11272), erro:
+
+fatal erro...
+<--
+
+#Erro: Problemas com arquivos grandes
+#Tive problemas com arquivos grandes e foi preciso removê-los do projeto. Foi preciso fazer tudo de novo.
+
+#Fonte de pesquisa:
+https://medium.com/@chroda/removendo-arquivos-rastreados-no-seu-repositório-git-baseado-no-gitignore-844ce2d6dc56
+
+
+### ATENÇÃO: Antes de prosseguir, faça um backup do seu projeto. ####
+
+
+#Criando o arquivo .gitignore
+-->
+gedit .gitignore
+
+	#Diretórios:
+	node_modules
+	jdk-11.0.7_doc-all
+
+	#Arquivo
+	Apache-NetBeans-11.3-bin-linux-x64.sh
+<--
+
+#Removendo tudo do repositório local
+-->
+git rm -r --cached .
+<--
+
+#Removendo o diretório .git
+-->
+rm .git -r
+<--
+
+#Adicione os arquivos novamente:
+-->
+git add .
+<--
+
+#Finalizando com o commit
+-->
+git commit -m ".gitignore fix"
+<--
+
+#Finalmente, fazendo o primeiro push(envio) de seu projeto.
+-->
+git push -u origin master
+
+Username for 'https://github.com': Nilson-Jr
+Password for 'https://Nilson-Jr@github.com': 
+Enumerating objects: 11272, done.
+Counting objects: 100% (11272/11272), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (1456/1456), done.
 Writing objects:   0% (18/11272),
-<--
-
-#Problemas com arquivos grandes
-#Tive problemas com arquivos grandes e foi preciso removê-los do projeto
--->
-git rm Programação/Java/Apache-NetBeans-11.3-bin-linux-x64.sh
-<--
-
--->
-git rm Programação/Java/jdk-11.0.7_doc-all/ -r
-<--
-

@@ -39,6 +39,7 @@ cat .gitconfig
 	name = Nilson-Jr
 	email = njuniornet@gmail.com
 <--
+
 #O diterório a ser versionado é o /home/nilson/Documents/Projetos.
 #Git Bash Here
 -->

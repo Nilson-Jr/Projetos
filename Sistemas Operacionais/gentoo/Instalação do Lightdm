@@ -1,0 +1,179 @@
+LightDM
+
+#Sistema Operacional: gentoo
+#Sistema de inicialização: openrc
+
+#Fonte:
+https://wiki.gentoo.org/wiki/LightDM/pt-br
+
+#Antes de tudo achei por bem instalar o gentoolkit
+-->
+emerge --ask gentoolkit
+<--
+
+#Dê uma olhada no arquivo package.use/zz-autounmask
+-->
+cat /etc/portage/package.use/zz-autounmask
+
+# package.use# required by www-client/firefox-68.8.0::gentoo[system-libvpx]
+# required by www-client/firefox (argument)
+>=media-libs/libvpx-1.7.0-r1 postproc
+# required by www-client/firefox-68.8.0::gentoo[system-sqlite]
+# required by www-client/firefox (argument)
+>=dev-db/sqlite-3.31.1 secure-delete
+# required by gnome-base/gnome-keyring-3.34.0::gentoo
+# required by mate-extra/mate-screensaver-1.22.2::gentoo[pam]
+# required by mate-base/mate-1.22::gentoo[extras]
+# required by mate-base/mate (argument)
+>=app-crypt/pinentry-1.1.0-r2 gnome-keyring
+# required by mate-extra/mate-user-share-1.22.1::gentoo
+# required by mate-extra/mate-user-share (argument)
+>=www-servers/apache-2.4.41 apache2_modules_auth_digest
+<--
+
+#Usando o comando equery para ver quais flags já estão habilitadas para instalação e/ou atualização e quais você gostaria de incluir no arquivo package.use/zz-autounmask.
+-->
+equery uses x11-misc/lightdm
+
+[ Legend : U - final flag setting for installation]
+[    	: I - package is installed with flag 	]
+[ Colors : set, unset                         	]
+ * Found these USE flags for x11-misc/lightdm-1.28.0:
+ U I
+ - - audit     	: Enable support for Linux audit subsystem using sys-process/audit
+ + - gnome     	: Add GNOME support
+ + + gtk       	: Pull in the gtk+ greeter
+ + - introspection : Add support for GObject based introspection
+ + + qt5       	: Add support for the Qt 5 application and UI framework
+ - - vala      	: Enable bindings for dev-lang/vala
+
+#Compare com o que esta no site oficial do gentoo:
+
+
+fonte: https://wiki.gentoo.org/wiki/LightDM/pt-br
+
+
+
+
+
+<--
+#Incluindo as flags audit e vala a variavel USE do
+-->
+echo ">=x11-misc/lightdm-1.28.0 audit vala" | tee -a /etc/portage/package.use/zz-autounmask
+
+#Repetindo o commando equery
+-->
+equery uses x11-misc/lightdm
+
+[ Legend : U - final flag setting for installation]
+[    	: I - package is installed with flag 	]
+[ Colors : set, unset                         	]
+ * Found these USE flags for x11-misc/lightdm-1.28.0:
+ U I
+ + - audit     	: Enable support for Linux audit subsystem using sys-process/audit
+ + - gnome     	: Add GNOME support
+ + + gtk       	: Pull in the gtk+ greeter
+ + - introspection : Add support for GObject based introspection
+ + + qt5       	: Add support for the Qt 5 application and UI framework
+ + - vala      	: Enable bindings for dev-lang/vala
+
+Obs.: Repare que agora o aplicativo audit e vala estão selecionados para instalação, porém o sinal de “-” indica que os mesmos ainda nao estao instalados.
+<--
+
+#Instalando o lightdm
+-->
+emerge --ask x11-misc/lightdm
+
+ * IMPORTANT: 9 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+
+
+These are the packages that would be merged, in order:
+
+Calculating dependencies... done!
+[ebuild  N 	] gnome-base/gnome-common-3.18.0-r1
+[ebuild  N 	] xfce-base/libxfce4util-4.14.0  USE="-introspection -vala"
+[ebuild  N 	] sys-apps/accountsservice-0.6.50-r1  USE="elogind introspection -consolekit -doc (-selinux) -systemd"
+[ebuild  N 	] xfce-base/xfconf-4.14.1  USE="-debug -introspection -perl -vala"
+[ebuild  N 	] xfce-base/libxfce4ui-4.14.1  USE="gtk2 startup-notification -debug -glade -introspection -vala"
+[ebuild  N 	] xfce-base/exo-0.12.11  USE="-gtk2"
+[ebuild  N 	] x11-misc/lightdm-1.28.0  USE="gnome gtk introspection qt5 -audit -vala"
+[ebuild  N 	] x11-misc/lightdm-gtk-greeter-2.0.6  USE="branding -appindicator"
+
+Would you like to merge these packages? [Yes/No]
+
+Obs.: Sobre o USE flags
+https://wiki.gentoo.org/wiki/USE_flag
+https://terminalroot.com.br/2020/03/10-dicas-fundamentais-para-seu-gentoo-linux.html
+<--
+
+#Veja quem é o seu display manager no momento
+-->
+Cat /etc/conf.d/xdm
+
+# We always try and start X on a static VT. The various DMs normally default
+# to using VT7. If you wish to use the xdm init script, then you should ensure
+# that the VT checked is the same VT your DM wants to use. We do this check to
+# ensure that you haven't accidentally configured something to run on the VT
+# in your /etc/inittab file so that you don't get a dead keyboard.
+CHECKVT=7
+
+# What display manager do you use ?  [ xdm | gdm | sddm | gpe | lightdm | entrance ]
+# NOTE: If this is set in /etc/rc.conf, that setting will override this one.
+DISPLAYMANAGER="xdm"
+<--
+
+#22142b
+# Defina o LightDM como o display manager padrão:
+-->
+vi /etc/conf.d/xdm
+DISPLAYMANAGER="lightdm"
+<-- 
+
+#Para iniciar o LightDM no boot, adicione o dbus e o xdm ao runlevel default: 
+-->
+rc-update add dbus default
+<--
+
+-->
+rc-update add xdm default
+<--
+
+#Mudar imagem de background do lightdm
+
+#Dê uma olhada no arquivo /etc/lightdm/lightdm-gtk-greeter.conf
+-->
+cat /etc/lightdm/lightdm-gtk-greeter.conf
+
+# Original file http://aur.archlinux.org/packages.php?ID=40708
+#
+# background =/usr/share/lightdm/backgrounds/gentoo-bg_65.jpg
+# theme-name = GTK+ theme to use
+# font-name = Font to use
+# xft-antialias = Whether to antialias Xft fonts (true or false)
+# xft-dpi = Resolution for Xft in dots per inch (e.g. 96)
+# xft-hintstyle = What degree of hinting to use (hintnone, hinthintslight, hintmedium, or hintfull)
+# xft-rgba = Type of subpixel antialiasing (none, rgb, bgr, vrgb or vbgr)
+#
+[greeter]
+background=/usr/share/lightdm/backgrounds/gentoo-cow.png
+theme-name=Adwaita
+icon-name=gnome
+cursor-name=gnome
+font-name=Cantarell 11
+xft-antialias=true
+xft-dpi=96
+xft-hintstyle=hintslight
+xft-rgba=rgb
+indicators=~host;~spacer;~clock;~spacer;~session;~language;~a11y;~power;~
+<--
+
+#Baixe uma imagem de seu agrado e guarde no diretório correto
+-->
+/usr/share/lightdm/backgrounds/
+<--
+
+
+
+
+

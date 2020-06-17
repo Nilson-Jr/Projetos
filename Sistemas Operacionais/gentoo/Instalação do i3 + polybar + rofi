@@ -1,0 +1,413 @@
+I3 + polybar + rofi
+
+#Documentação
+https://i3wm.org/docs/userguide.html#exec
+
+#Polibar temas
+https://terminalroot.com.br/2019/07/uma-colecao-de-temas-prontos-para-seu-polybar.html
+
+#Instação do i3, polybar e mais outros pacotes necessários
+-->
+sudo emerge --ask i3 i3status rxvt-unicode urxvtconfig feh dev-vcs/git
+
+* Messages for package x11-wm/i3-4.18:
+
+ * There are several packages that you may find useful with i3 and
+ * their usage is suggested by the upstream maintainers, namely:
+ *   x11-misc/dmenu
+ *   x11-misc/i3status
+ *   x11-misc/i3lock
+ * Please refer to their description for additional info.
+>>> Auto-cleaning packages...
+
+>>> No outdated packages were found on your system.
+
+ * GNU info directory index is up-to-date.
+
+ * IMPORTANT: 9 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+
+Obs.: O sistema informou que o pacote urxvtconfig tem dependências marcadas como “Masked”. Eu não sei o que isso quer dizer. Retirei o pacote, por hora, para instalar ele separadamente.
+<--
+
+#Instalando o imlib2(para ler arquivos jpeg e png)
+-->
+emerge --search imlib2
+
+[ Results for search key : imlib2 ]
+Searching...
+
+*  app-arch/wimlib [ Masked ]
+      Latest version available: 1.13.0
+      Latest version installed: [ Not Installed ]
+      Size of files: 1.011 KiB
+      Homepage:      https://wimlib.net/
+      Description:   The open source Windows Imaging (WIM) library
+      License:       || ( GPL-3+ LGPL-3+ ) CC0-1.0
+
+*  dev-perl/Image-Imlib2
+      Latest version available: 2.30.0-r1
+      Latest version installed: [ Not Installed ]
+      Size of files: 36 KiB
+      Homepage:      https://metacpan.org/release/Image-Imlib2
+      Description:   Interface to the Imlib2 image library
+      License:       || ( Artistic GPL-1+ )
+
+*  media-libs/imlib
+      Latest version available: 1.9.15-r5
+      Latest version installed: [ Not Installed ]
+      Size of files: 670 KiB
+      Homepage:      http://ftp.acc.umu.se/pub/GNOME/sources/imlib/1.9/
+      Description:   Image loading and rendering library
+      License:       GPL-2
+
+*  media-libs/imlib2
+      Latest version available: 1.6.1
+      Latest version installed: 1.6.1
+      Size of files: 1.015 KiB
+      Homepage:      https://www.enlightenment.org/ https://sourceforge.net/projects/enlightenment/files/imlib2-src/
+      Description:   Version 2 of an advanced replacement library for libraries like libXpm
+      License:       BSD
+
+*  media-plugins/imlib2_loaders
+      Latest version available: 1.6.1
+      Latest version installed: [ Not Installed ]
+      Size of files: 367 KiB
+      Homepage:      https://www.enlightenment.org/ https://sourceforge.net/projects/enlightenment/files/imlib2-src/
+      Description:   Additional image loaders for Imlib2
+      License:       || ( BSD GPL-2 )
+
+[ Applications found : 5 ]
+
+<--
+
+-->
+sudo equery uses media-libs/imlib2
+
+[ Legend : U - final flag setting for installation]
+[        : I - package is installed with flag     ]
+[ Colors : set, unset                             ]
+ * Found these USE flags for media-libs/imlib2-1.6.1:
+ U I
+ + + X                  : Use the X window system
+ - - abi_x86_32         : 32-bit (x86) libraries
+ + + bzip2              : Bzip2 loader support
+ + + cpu_flags_x86_sse2 : Use the SSE2 instruction set
+ - - doc                : Add extra documentation (API, Javadoc, etc). It is recommended to enable per package instead of globally
+ + + gif                : Gif image loader support
+ + + jpeg               : Jpeg image loader support
+ + + mp3                : ID3 loader support
+ + + png                : PNG image loader support
+ + + shm                : Use MIT shared memory support for X image transfer
+ - - static-libs        : Build static versions of dynamic libraries as well
+ + + tiff               : TIFF image loader support
+ + + webp               : WEBP image loader support
+ + + zlib               : Zlib loader support
+
+Obs.: O suporte a jpeg e png já estava habilitado.
+<--
+
+#Instalando o imlib2
+-->
+sudo emerge --ask media-libs/imlib2
+<--
+
+#Tentando instalar o pacote urxvtconfig
+#Primeiro, vamos pesquisar por ele
+-->
+emerge --search urxvtconfig
+
+[ Results for search key : urxvtconfig ]
+Searching...
+
+*  x11-misc/urxvtconfig [ Masked ]
+      Latest version available: 1.0-r1
+      Latest version installed: [ Not Installed ]
+      Size of files: 18 KiB
+      Homepage:      https://github.com/daedreth/URXVTConfig
+      Description:   GUI configuration tool for the rxvt-unicode terminal emulator
+      License:       GPL-3
+
+[ Applications found : 1 ]
+
+#fonte para estudo:
+https://wiki.gentoo.org/wiki/ACCEPT_KEYWORDS/pt-br
+https://wiki.gentoo.org/wiki//etc/portage/make.conf#CPU_FLAGS_X86
+
+###Dicas de shell
+https://terminalroot.com.br/2015/08/45-exemplos-de-variaveis-e-arrays-em_19.html
+
+###Dicas de instalações
+https://terroo.github.io
+
+
+<--
+
+#Para não mexer com o sistema de uma forma “global”, eu preferi utilizar a opção n° 2 acima que faz a mudança apenas para o pacote determinado:
+-->
+sudo vi /etc/portage/package.accept_keywords
+
+x11-misc/urxvtconfig ~amd64
+<--
+
+
+
+
+#Instalando o urxvtconfig
+-->
+sudo emerge --ask x11-misc/urxvtconfig
+<--
+
+#Instalando o i3blocks
+-->
+sudo emerge --ask x11-misc/i3blocks
+<--
+
+#Descobrindo onde fica o seu arquivo de configuração
+-->
+man i3blocks | grep i3blocks.conf
+<--
+
+#Copiando o arquivo de configuração para o diretório home
+-->
+cp /etc/i3blocks.conf ~/.
+<--
+
+#Mudando o nome do arquivo para começar com “.”
+-->
+mv i3blocks.conf .i3blocks.conf
+<--
+
+Obs.:
+#O arquivo de configuração do i3 fica em .config/i3/config
+
+#Agora configure o arquivo .config/i3/config
+-->
+vi .config/i3/config
+
+*incluir no final do arquivo
+bar {
+  Status_command i3blocks
+}
+<--
+
+
+
+
+
+
+
+
+
+#Instalar o rofi
+#Primeiramente vamos ver se há flags padrão para o rofi
+-->
+sudo equery uses x11-misc/rofi
+
+[ Legend : U - final flag setting for installation]
+[        : I - package is installed with flag     ]
+[ Colors : set, unset                             ]
+ * Found these USE flags for x11-misc/rofi-1.5.4-r1:
+ U I
+ - - test       : Enable dependencies and/or preparations necessary to run tests (usually controlled by FEATURES=test but can be toggled independently)
+ - - windowmode : Enable normal window mode
+<--
+
+#Instalar o rofi sem setar flags (ver legenda em *1)
+-->
+sudo emerge --ask x11-misc/rofi
+<--
+
+#Instalando o polybar
+#Primeiro vamos ver seus flags habilitados por padrão
+-->
+sudo equery uses x11-misc/polybar
+
+[ Legend : U - final flag setting for installation]
+[        : I - package is installed with flag     ]
+[ Colors : set, unset                             ]
+ * Found these USE flags for x11-misc/polybar-3.4.2-r1:
+ U I
+ + + alsa                           : Add support for media-libs/alsa-lib (Advanced Linux Sound Architecture)
+ - - curl                           : Add support for client-side URL transfer library
+ - - i3wm                           : Add support for i3 window manager
+ - - ipc                            : Add support for Inter-Process Messaging
+ - - mpd                            : Add support for Music Player Daemon
+ - - network                        : Enable network support
+ - - pulseaudio                     : Add support for PulseAudio sound server
+ - - python_single_target_python3_6 : Build for Python 3.6 only
+ + + python_single_target_python3_7 : Build for Python 3.7 only
+<--
+
+#Incluindo o suporte ao i3wm
+-->
+Obs.: Faça isso como root
+
+sudo echo ">=x11-misc/polybar-3.4.2-r1 i3wm" | tee -a /etc/portage/package.use/zz-autounmask
+<--
+
+#Verificando se o flag i3wm foi escolhido corretamente
+-->
+sudo equery uses x11-misc/polybar
+
+[ Legend : U - final flag setting for installation]
+[        : I - package is installed with flag     ]
+[ Colors : set, unset                             ]
+ * Found these USE flags for x11-misc/polybar-3.4.2-r1:
+ U I
+ + + alsa                           : Add support for media-libs/alsa-lib (Advanced Linux Sound Architecture)
+ - - curl                           : Add support for client-side URL transfer library
+ + + i3wm                           : Add support for i3 window manager
+ - - ipc                            : Add support for Inter-Process Messaging
+ - - mpd                            : Add support for Music Player Daemon
+ - - network                        : Enable network support
+ - - pulseaudio                     : Add support for PulseAudio sound server
+ - - python_single_target_python3_6 : Build for Python 3.6 only
+ + + python_single_target_python3_7 : Build for Python 3.7 only
+<--
+
+#Agora instale o polybar
+-->
+sudo emerge --ask x11-misc/polybar
+<--
+
+#Crie o diretório polybar dentro do ~.config
+-->
+mkdir .config/polybar
+<--
+
+#Copie o arquivo de configuração do polybar “config.bz2”, que está compactado, para o diretório home
+-->
+cp /usr/share/doc/polybar-3.4.2-r1/config.bz2 .
+<--
+
+#Descompactar o arquivo config.bz2
+-->
+bzip2 -d config.bz2
+<--
+
+#Mova o arquivo config gerado para o diretório .config/polybar
+-->
+mv config .config/polybar
+<--
+
+#Neste ponto o polybar já está pronto para rodar, mas não faça isso de dentro do MATE
+-->
+polybar example
+<--
+
+#Fontes para estudo
+#Configurações do polybar, rofi e outros
+https://terminalroot.com.br/2018/11/como-customizar-o-polybar-rofi-e-outros.html
+
+#Configurações do rxvt
+https://terminalroot.com.br/2018/11/como-customizar-o-polybar-rofi-e-outros.html
+
+#Como configurar o i3
+https://terminalroot.com.br/2018/07/como-instalar-e-configurar-o-i3wm-e-o-i3blocks.html
+
+https://www.vivaolinux.com.br/dica/Abrir-apps-automaticamente-em-areas-de-trabalho-ao-iniciar-o-i3wm
+
+#Configurar o polybar
+-->
+wget "https://gitlab.com/terminalroot/arch/raw/master/launch.sh" -O $HOME/.config/polybar/launch.sh
+
+Obs.: Pode ser necessário tornar o arquivo executável
+<--
+
+
+
+
+
+
+
+#Chamando o polybar no arquivo de configuração do i3
+-->
+vi .config/i3/config
+
+*Incluir a linha no final do arquivo
+exec .config/polybar/launch.sh
+<--
+
+#Modificar o terminal que foi instalado neste tutorial. Problema: não consigo copiar e colar com ele. Talvez tenha que procurar tutoriais na internet. Por hora vou mudar para o terminal do MATE.
+-->
+bindsym $mod+Return exec mate-terminal #i3-sensible-terminal
+
+Obs.: Solução para este problema ver documentação “Gentoo - configuração do urxvt”.
+<--
+
+#Modificar a linha que chama o dmenu para chamar o rofi
+#start dmenu (a program launcher)
+-->
+bindsym $mod+d exec rofi -show run #dmenu_run
+<--
+
+#Chamando o rofi no arquivo de configuração do i3
+-->
+bindsym $mod+d exec --no-startup-id rofi -modi "window,drun" -show drun
+
+Obs.: Talvez este comando, quando colocado dentro do arquivo de configuração do i3, não funcione. Assim, pode ser preciso criar um script shell onde conste este comando e, de dentro do i3, chame o script ao invés de digitar o comando.
+
+Obs.: No arquivo de configuração do i3, comente a linha original que chama o drum com o mesmo código de teclas.
+<--
+
+
+
+#Reiniciando o i3
+-->
+bindsym $mod+Shift+r restart
+<--
+
+#Caso você queira reiniciar o polybar ao reiniciar o i3 faça
+-->
+bindsym $mod+Shift+r restart && /home/nilson/.configure/polybar/launch.sh
+<--
+
+#Comando interessante no i3
+-->
+xprop WM_CLASS
+<--
+
+----------------------------------
+*1
+##Instalar o rofi sem setar flags não instalou o windowmode e esse é um bom recurso a se usar. Assim, vamos usar esta flag:
+-->
+sudo echo ">=x11-misc/rofi-1.5.4-r1 windowmode" | tee -a /etc/portage/package.use/zz-autounmask
+<--
+
+##Relendo(reload) as configurações do arquivo /etc/portage/package.use/zz-autounmask
+-->
+sudo etc-update --automde -5
+<--
+
+#Olhando novamente para ver se a flag foi ativada
+-->
+sudo equery uses x11-misc/rofi
+
+[ Legend : U - final flag setting for installation]
+[        : I - package is installed with flag     ]
+[ Colors : set, unset                             ]
+ * Found these USE flags for x11-misc/rofi-1.5.4-r1:
+ U I
+ - - test       : Enable dependencies and/or preparations necessary to run tests (usually
+                  controlled by FEATURES=test but can be toggled independently)
+ + - windowmode : Enable normal window mode
+<--
+
+#Reinstalando o rofi com a flag windowmode ativa
+-->
+sudo emerge --ask x11-misc/rofi
+
+* IMPORTANT: 9 news items need reading for repository 'gentoo'.
+* Use eselect news read to view new items.
+
+
+These are the packages that would be merged, in order:
+
+Calculating dependencies... done!
+[ebuild   R    ] x11-misc/rofi-1.5.4-r1  USE="windowmode*" 
+
+Would you like to merge these packages? [Yes/No] yes
+<--
+
+

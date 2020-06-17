@@ -1,0 +1,861 @@
+Instalação do Mate
+
+#Para configurar o teclado
+-->
+cat /etc/conf.d/keymaps
+# Use keymap to specify the default console keymap.  There is a complete tree
+# of keymaps in /usr/share/keymaps to choose from.
+
+keymap="us"
+<--
+
+-->
+vi /etc/conf.d/keymaps
+# Use keymap to specify the default console keymap.  There is a complete tree
+# of keymaps in /usr/share/keymaps to choose from.
+
+#keymap="us"
+keymap="br-abnt2"
+<--
+
+#Mudando o hostname
+-->
+cat /etc/conf.d/hostname 
+# Set to the hostname of this machine
+hostname="localhost"
+<--
+
+-->
+vi /etc/conf.d/hostname
+# Set to the hostname of this machine
+hostname="gentoo"
+<--
+
+#Criar um novo usuário
+-->
+useradd -m -G users,wheel,audio,video -s /bin/bash nilson
+<--
+
+#Configurando o portage para reconhecer a língua português brasileiro
+-->
+cat /etc/portage/make.conf 
+
+# These settings were set by the catalyst build script that automatically
+# built this stage.
+# Please consult /usr/share/portage/config/make.conf.example for a more
+# detailed example.
+COMMON_FLAGS="-O2 -pipe"
+CFLAGS="${COMMON_FLAGS}"
+CXXFLAGS="${COMMON_FLAGS}"
+FCFLAGS="${COMMON_FLAGS}"
+FFLAGS="${COMMON_FLAGS}"
+
+# NOTE: This stage was built with the bindist Use flag enabled
+PORTDIR="/var/db/repos/gentoo"
+DISTDIR="/var/cache/distfiles"
+PKGDIR="/var/cache/binpkgs"
+
+# This sets the language of build output to English.
+# Please keep this setting intact when reporting bugs.
+LC_MESSAGES=C
+
+GENTOO_MIRRORS="https://gentoo.c3sl.ufpr.br/ http://gentoo.c3sl.ufpr.br/ rsync://gentoo.c3sl.ufpr.br/gentoo/"
+GRUB_PLATFORMS="efi-64"
+<--
+
+-->
+vi /etc/portage/make.conf
+
+# These settings were set by the catalyst build script that automatically
+# built this stage.
+# Please consult /usr/share/portage/config/make.conf.example for a more
+# detailed example.
+COMMON_FLAGS="-O2 -pipe"
+CFLAGS="${COMMON_FLAGS}"
+CXXFLAGS="${COMMON_FLAGS}"
+FCFLAGS="${COMMON_FLAGS}"
+FFLAGS="${COMMON_FLAGS}"
+
+# NOTE: This stage was built with the bindist Use flag enabled
+PORTDIR="/var/db/repos/gentoo"
+DISTDIR="/var/cache/distfiles"
+PKGDIR="/var/cache/binpkgs"
+
+# This sets the language of build output to English.
+# Please keep this setting intact when reporting bugs.
+LC_MESSAGES=C
+
+GENTOO_MIRRORS="https://gentoo.c3sl.ufpr.br/ http://gentoo.c3sl.ufpr.br/ rsync://gentoo.c3sl.ufpr.br/gentoo/"
+
+#Suporte a EFI
+GRUB_PLATFORMS="efi-64"
+
+#Adicionando a língua portuguesa
+LINGUAS="pt_BR"
+<--
+
+#Dar uma olhada no arquivo /etc/locale.gen e colocar mais um unicode além do pt_BR.UTF-8 UTF-8
+-->
+cat /etc/locale.gen
+
+# /etc/locale.gen: list all of the locales you want to have on your system.
+# See the locale.gen(5) man page for more details.
+#
+# The format of each line:
+# <locale name> <charset>
+#
+# Where <locale name> starts with a name as found in /usr/share/i18n/locales/.
+# It must be unique in the file as it is used as the key to locale variables.
+# For non-default encodings, the <charset> is typically appended.
+#
+# Where <charset> is a charset located in /usr/share/i18n/charmaps/ (sans any
+# suffix like ".gz").
+#
+# All blank lines and lines starting with # are ignored.
+#
+# For the default list of supported combinations, see the file:
+# /usr/share/i18n/SUPPORTED
+#
+# Whenever glibc is emerged, the locales listed here will be automatically
+# rebuilt for you.  After updating this file, you can simply run `locale-gen`
+# yourself instead of re-emerging glibc.
+
+#en_US ISO-8859-1
+#en_US.UTF-8 UTF-8
+#ja_JP.EUC-JP EUC-JP
+#ja_JP.UTF-8 UTF-8
+#ja_JP EUC-JP
+#en_HK ISO-8859-1
+#en_PH ISO-8859-1
+#de_DE ISO-8859-1
+#de_DE@euro ISO-8859-15
+#es_MX ISO-8859-1
+#fa_IR UTF-8
+#fr_FR ISO-8859-1
+#fr_FR@euro ISO-8859-15
+#it_IT ISO-8859-1
+pt_BR.UTF-8 UTF-8
+<--
+
+-->
+vi /etc/locale.gen
+
+# /etc/locale.gen: list all of the locales you want to have on your system.
+# See the locale.gen(5) man page for more details.
+#
+# The format of each line:
+# <locale name> <charset>
+#
+# Where <locale name> starts with a name as found in /usr/share/i18n/locales/.
+# It must be unique in the file as it is used as the key to locale variables.
+# For non-default encodings, the <charset> is typically appended.
+#
+# Where <charset> is a charset located in /usr/share/i18n/charmaps/ (sans any
+# suffix like ".gz").
+#
+# All blank lines and lines starting with # are ignored.
+#
+# For the default list of supported combinations, see the file:
+# /usr/share/i18n/SUPPORTED
+#
+# Whenever glibc is emerged, the locales listed here will be automatically
+# rebuilt for you.  After updating this file, you can simply run `locale-gen`
+# yourself instead of re-emerging glibc.
+
+#en_US ISO-8859-1
+#en_US.UTF-8 UTF-8
+#ja_JP.EUC-JP EUC-JP
+#ja_JP.UTF-8 UTF-8
+#ja_JP EUC-JP
+#en_HK ISO-8859-1
+#en_PH ISO-8859-1
+#de_DE ISO-8859-1
+#de_DE@euro ISO-8859-15
+#es_MX ISO-8859-1
+#fa_IR UTF-8
+#fr_FR ISO-8859-1
+#fr_FR@euro ISO-8859-15
+#it_IT ISO-8859-1
+
+pt_BR.UTF-8 UTF-8
+pt_BR ISO- 8859-1
+<--
+
+#Você também pode setar estes unicodes via eselect
+-->
+eselect locale list | grep pt_
+<--
+
+-->
+eselect locale set 617
+<--
+
+#Ainda sobre as configurações de língua é bom dar uma olhada no arquivo /etc/env/02locale e adicionar o LC_COLLATE
+-->
+cat /etc/env/02locale
+
+# Configuration file for eselect
+# This file has been automatically generated.
+LANG="pt_BR.utf8"
+<--
+
+-->
+vi /etc/env/02locale
+
+# Configuration file for eselect
+# This file has been automatically generated.
+LANG="pt_BR.utf8"
+LC_COLLATE="C"
+<--
+
+#Agora vamos ver a rede
+###ATENÇÃO: Os passos abaixo pressupõe que você não utilizará o serviço DCHP
+-->
+ifconfig
+
+
+<--
+
+-->
+ls /etc/init.d/net.lo
+/etc/init.d/net.lo
+<--
+
+#Criando um link simbólico para a sua placa de rede
+-->
+cd /etc/init.d/
+<--
+
+-->
+ln -sf net.lo net.<nome-da-placa> 
+<--
+###
+
+#Com DHCP
+#Procurando e instalando o serviço DHCP
+-->
+emerge --search dhcpcd
+
+setlocale: unsupported locale setting
+  
+[ Results for search key : dhcpcd ]
+Searching...
+
+*  acct-group/dhcp
+      Latest version available: 0
+      Latest version installed: [ Not Installed ]
+      Size of files: 0 KiB
+      Homepage:      
+      Description:   System group: dhcp
+      License:       
+
+*  acct-group/dhcpcd
+      Latest version available: 0
+      Latest version installed: [ Not Installed ]
+      Size of files: 0 KiB
+      Homepage:      
+      Description:   System group: dhcpcd
+      License:       
+
+*  acct-user/dhcp
+      Latest version available: 0
+      Latest version installed: [ Not Installed ]
+      Size of files: 0 KiB
+      Homepage:      
+      Description:   user for dhcp daemon
+      License:       
+
+*  acct-user/dhcpcd
+      Latest version available: 0
+      Latest version installed: [ Not Installed ]
+      Size of files: 0 KiB
+      Homepage:      
+      Description:   user for dhcpcd client
+      License:     
+<--
+
+-->
+emerge --ask net-misc/dhcpcd
+
+setlocale: unsupported locale setting
+
+ * IMPORTANT: 7 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+
+
+These are the packages that would be merged, in order:
+
+Calculating dependencies... done!
+[ebuild   N    ] net-misc/dhcpcd-8.1.9 
+
+Would you like to merge these packages? [Yes/No] Yes
+<--
+
+-->
+emerge --search netifrc
+
+setlocale: unsupported locale setting
+  
+[ Results for search key : netifrc ]
+Searching...
+
+*  dev-perl/Net-IRC
+      Latest version available: 0.790.0-r1
+      Latest version installed: [ Not Installed ]
+      Size of files: 49 KiB
+      Homepage:      https://metacpan.org/release/Net-IRC
+      Description:   Perl IRC module
+      License:       Artistic
+
+*  dev-ruby/netrc
+      Latest version available: 0.11.0
+      Latest version installed: [ Not Installed ]
+      Size of files: 11 KiB
+      Homepage:      https://github.com/geemus/netrc
+      Description:   This library reads and writes .netrc files
+      License:       MIT
+
+*  net-misc/netifrc
+      Latest version available: 0.7.1
+      Latest version installed: 0.7.1
+      Size of files: 81 KiB
+      Homepage:      https://www.gentoo.org/proj/en/base/openrc/
+      Description:   Gentoo Network Interface Management Scripts
+      License:       BSD-2
+
+[ Applications found : 3 ]
+<--
+
+-->
+emerge --ask net-misc/netifrc
+
+setlocale: unsupported locale setting
+
+ * IMPORTANT: 7 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+
+
+These are the packages that would be merged, in order:
+
+Calculating dependencies... done!
+[ebuild   N    ] net-misc/netifrc-0.7.1 
+
+Would you like to merge these packages? [Yes/No] Yes 
+
+
+...
+
+
+ * Final size of build directory: 820 KiB
+ * Final size of installed tree:  408 KiB
+
+
+>>> Installing (1 of 1) net-misc/netifrc-0.7.1::gentoo
+
+>>> Recording net-misc/netifrc in "world" favorites file...
+>>> Auto-cleaning packages...
+
+>>> No outdated packages were found on your system.
+
+ * GNU info directory index is up-to-date.
+
+ * IMPORTANT: 6 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+<--
+
+#Instalando o xorg
+#Primeria coisa a fazer é usar o eselect para escolher outro profile
+-->
+eselect profile list
+
+Available profile symlink targets:
+  [1]   default/linux/amd64/17.0 (stable)
+  [2]   default/linux/amd64/17.0/selinux (stable)
+  [3]   default/linux/amd64/17.0/hardened (stable)
+  [4]   default/linux/amd64/17.0/hardened/selinux (stable)
+  [5]   default/linux/amd64/17.0/desktop (stable)
+  [6]   default/linux/amd64/17.0/desktop/gnome (stable)
+  [7]   default/linux/amd64/17.0/desktop/gnome/systemd (stable)
+  [8]   default/linux/amd64/17.0/desktop/plasma (stable)
+  [9]   default/linux/amd64/17.0/desktop/plasma/systemd (stable)
+  [10]  default/linux/amd64/17.0/developer (stable)
+  [11]  default/linux/amd64/17.0/no-multilib (stable)
+  [12]  default/linux/amd64/17.0/no-multilib/hardened (stable)
+  [13]  default/linux/amd64/17.0/no-multilib/hardened/selinux (stable)
+  [14]  default/linux/amd64/17.0/systemd (stable)
+  [15]  default/linux/amd64/17.0/x32 (dev)
+  [16]  default/linux/amd64/17.1 (stable) *
+  [17]  default/linux/amd64/17.1/selinux (stable)
+  [18]  default/linux/amd64/17.1/hardened (stable)
+  [19]  default/linux/amd64/17.1/hardened/selinux (stable)
+  [20]  default/linux/amd64/17.1/desktop (stable)
+  [21]  default/linux/amd64/17.1/desktop/gnome (stable)
+  [22]  default/linux/amd64/17.1/desktop/gnome/systemd (stable)
+  [23]  default/linux/amd64/17.1/desktop/plasma (stable)
+  [24]  default/linux/amd64/17.1/desktop/plasma/systemd (stable)
+  [25]  default/linux/amd64/17.1/developer (stable)
+  [26]  default/linux/amd64/17.1/no-multilib (stable)
+  [27]  default/linux/amd64/17.1/no-multilib/hardened (stable)
+  [28]  default/linux/amd64/17.1/no-multilib/hardened/selinux (stable)
+  [29]  default/linux/amd64/17.1/systemd (stable)
+  [30]  default/linux/amd64/17.0/musl (exp)
+  [31]  default/linux/amd64/17.0/musl/hardened (exp)
+  [32]  default/linux/amd64/17.0/musl/hardened/selinux (exp)
+  [33]  default/linux/amd64/17.0/uclibc (exp)
+  [34]  default/linux/amd64/17.0/uclibc/hardened (exp)
+<--
+
+#Olhando novamente para ter certeza de que o profile correto foi setado
+-->
+eselect profile list
+
+Available profile symlink targets:
+  [1]   default/linux/amd64/17.0 (stable)
+  [2]   default/linux/amd64/17.0/selinux (stable)
+  [3]   default/linux/amd64/17.0/hardened (stable)
+  [4]   default/linux/amd64/17.0/hardened/selinux (stable)
+  [5]   default/linux/amd64/17.0/desktop (stable)
+  [6]   default/linux/amd64/17.0/desktop/gnome (stable)
+  [7]   default/linux/amd64/17.0/desktop/gnome/systemd (stable)
+  [8]   default/linux/amd64/17.0/desktop/plasma (stable)
+  [9]   default/linux/amd64/17.0/desktop/plasma/systemd (stable)
+  [10]  default/linux/amd64/17.0/developer (stable)
+  [11]  default/linux/amd64/17.0/no-multilib (stable)
+  [12]  default/linux/amd64/17.0/no-multilib/hardened (stable)
+  [13]  default/linux/amd64/17.0/no-multilib/hardened/selinux (stable)
+  [14]  default/linux/amd64/17.0/systemd (stable)
+  [15]  default/linux/amd64/17.0/x32 (dev)
+  [16]  default/linux/amd64/17.1 (stable)
+  [17]  default/linux/amd64/17.1/selinux (stable)
+  [18]  default/linux/amd64/17.1/hardened (stable)
+  [19]  default/linux/amd64/17.1/hardened/selinux (stable)
+  [20]  default/linux/amd64/17.1/desktop (stable) *
+  [21]  default/linux/amd64/17.1/desktop/gnome (stable)
+  [22]  default/linux/amd64/17.1/desktop/gnome/systemd (stable)
+  [23]  default/linux/amd64/17.1/desktop/plasma (stable)
+  [24]  default/linux/amd64/17.1/desktop/plasma/systemd (stable)
+  [25]  default/linux/amd64/17.1/developer (stable)
+  [26]  default/linux/amd64/17.1/no-multilib (stable)
+  [27]  default/linux/amd64/17.1/no-multilib/hardened (stable)
+  [28]  default/linux/amd64/17.1/no-multilib/hardened/selinux (stable)
+  [29]  default/linux/amd64/17.1/systemd (stable)
+  [30]  default/linux/amd64/17.0/musl (exp)
+  [31]  default/linux/amd64/17.0/musl/hardened (exp)
+  [32]  default/linux/amd64/17.0/musl/hardened/selinux (exp)
+  [33]  default/linux/amd64/17.0/uclibc (exp)
+  [34]  default/linux/amd64/17.0/uclibc/hardened (exp)
+<--
+
+-->
+eselect profile set 20
+<--
+
+-->
+emerge --ask --update --deep --newuse @world
+
+setlocale: unsupported locale setting
+
+ * IMPORTANT: 6 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+
+
+These are the packages that would be merged, in order:
+
+Calculating dependencie /
+
+Obs.: Esta etapa é muito demorada, por que ele vai instalar todas as dependências necessárias para este novo profile.
+<--
+
+#Procurando e instalando o xorg
+-->
+emerge --search xorg
+
+setlocale: unsupported locale setting
+  
+[ Results for search key : xorg ]
+Searching...
+
+*  x11-base/xorg-drivers
+      Latest version available: 1.20-r2
+      Latest version installed: [ Not Installed ]
+      Size of files: 0 KiB
+      Homepage:      https://wiki.gentoo.org/wiki/No_homepage
+      Description:   Meta package containing deps on all xorg drivers
+      License:       metapackage
+
+*  x11-base/xorg-proto
+      Latest version available: 2019.2
+      Latest version installed: 2019.2
+      Size of files: 1.056 KiB
+      Homepage:      https://gitlab.freedesktop.org/xorg/proto/xorgproto
+      Description:   X.Org combined protocol headers
+      License:       MIT
+
+*  x11-base/xorg-server
+      Latest version available: 1.20.7
+      Latest version installed: [ Not Installed ]
+      Size of files: 6.156 KiB
+      Homepage:      https://www.x.org/wiki/ https://gitlab.freedesktop.org/xorg/xserver/xorg-server
+      Description:   X.Org X servers
+      License:       MIT
+
+*  x11-base/xorg-x11
+      Latest version available: 7.4-r3
+      Latest version installed: [ Not Installed ]
+      Size of files: 0 KiB
+      Homepage:      https://www.x.org/wiki/
+      Description:   An X11 implementation maintained by the X.Org Foundation (meta package)
+      License:       metapackage
+
+*  x11-misc/xorg-cf-files
+      Latest version available: 1.0.6-r1
+      Latest version installed: [ Not Installed ]
+      Size of files: 335 KiB
+      Homepage:      https://www.x.org/wiki/ https://gitlab.freedesktop.org/xorg/util/cf
+      Description:   Old Imake-related build files
+      License:       MIT
+
+[ Applications found : 5 ]
+
+<--
+
+-->
+emerge --ask x11-base/xorg-drivers
+
+setlocale: unsupported locale setting
+
+ * IMPORTANT: 6 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+
+
+These are the packages that would be merged, in order:
+
+Calculating dependencies /
+
+...
+
+* Final size of build directory: 5084 KiB (4.9 MiB)
+ * Final size of installed tree:   924 KiB
+
+strip: x86_64-pc-linux-gnu-strip --strip-unneeded -N __gentoo_check_ldflags__ -R .comment -R .GCC.command.line -R .note.gnu.gold-version
+   /usr/lib64/xorg/modules/drivers/nouveau_drv.so
+
+>>> Installing (21 of 21) x11-drivers/xf86-video-nouveau-1.0.16::gentoo
+
+ * Messages for package x11-apps/xinit-1.4.1:
+
+ * If you use startx to start X instead of a login manager like gdm/kdm,
+ * you can set the XSESSION variable to anything in /etc/X11/Sessions/ or
+ * any executable. When you run startx, it will run this as the login session.
+ * You can set this in a file in /etc/env.d/ for the entire system,
+ * or set it per-user in ~/.bash_profile (or similar for other shells).
+ * Here's an example of setting it for the whole system:
+ *     echo XSESSION="Gnome" > /etc/env.d/90xsession
+ *     env-update && source /etc/profile
+>>> Auto-cleaning packages...
+
+>>> No outdated packages were found on your system.
+
+ * GNU info directory index is up-to-date.
+
+ * IMPORTANT: 7 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+
+<-- 
+
+-->
+emerge --ask x11-base/xorg-server
+
+setlocale: unsupported locale setting
+
+ * IMPORTANT: 7 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+
+
+These are the packages that would be merged, in order:
+
+Calculating dependencies... done!
+[ebuild   R    ] x11-base/xorg-server-1.20.7 
+
+Would you like to merge these packages? [Yes/No] Yes
+<--
+
+#Instalando o MATE
+-->
+emerge --ask mate-base/mate
+
+setlocale: unsupported locale setting
+
+ * IMPORTANT: 7 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+
+
+These are the packages that would be merged, in order:
+
+Calculating dependencies... done!
+[ebuild  N     ] mate-base/mate-common-1.22.2 
+[ebuild  N     ] dev-libs/libaio-0.3.110  USE="(split-usr) -static-libs -test" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] app-crypt/argon2-20190702  USE="-static-libs" 
+[ebuild  N     ] dev-util/boost-build-1.72.0  USE="-examples" 
+[ebuild  N     ] dev-libs/tinyxml-2.6.2-r3  USE="stl -debug -doc -static-libs" 
+[ebuild  N     ] dev-libs/libburn-1.5.2_p1  USE="-debug -static-libs" 
+[ebuild  N     ] dev-lang/orc-0.4.29  USE="-examples -pax_kernel -static-libs" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] media-libs/libdvdcss-1.4.2  USE="-doc -static-libs" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] dev-libs/boost-1.72.0-r1  USE="bzip2 icu nls threads zlib -context -debug -doc -lzma -mpi (-numpy) -python -static-libs -tools -zstd" ABI_X86="(64) -32 (-x32)" PYTHON_TARGETS="python2_7 python3_7 -python3_6 (-python3_8)" 
+[ebuild  N     ] dev-libs/libisofs-1.5.2  USE="acl xattr zlib -debug -static-libs -verbose-debug" 
+[ebuild  N     ] net-wireless/wireless-tools-30_pre9  USE="-multicall" 
+[ebuild  N     ] media-libs/x264-0.0.20190214  USE="interlaced threads (-altivec) -opencl -pic -static-libs" ABI_X86="(64) -32 (-x32)" CPU_FLAGS_X86="sse" 
+[ebuild  N     ] app-text/docbook-sgml-dtd-3.0-r4 
+[ebuild  N     ] app-i18n/unicode-data-12.0.0 
+[ebuild  N     ] app-text/docbook-dsssl-stylesheets-1.79-r4 
+[ebuild  N     ] app-crypt/p11-kit-0.23.19-r1  USE="asn1 libffi trust -debug" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] app-eselect/eselect-cdparanoia-0.1 
+[ebuild  N     ] app-eselect/eselect-notify-send-0.1 
+[ebuild  N     ] app-eselect/eselect-mpg123-0.1 
+[ebuild  N     ] virtual/awk-1 
+[ebuild  N     ] dev-perl/XML-NamespaceSupport-1.120.0  USE="-test" 
+[ebuild  N     ] dev-perl/XML-SAX-Base-1.90.0  USE="-test" 
+[ebuild  N     ] sys-libs/libcap-ng-0.7.10  USE="-python -static-libs" PYTHON_TARGETS="python3_7 -python3_6 (-python3_8)" 
+[ebuild  N     ] media-libs/libdvdread-6.0.0  USE="css -static-libs" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] x11-libs/startup-notification-0.12-r1  USE="-static-libs" 
+[ebuild  N     ] media-libs/libvorbis-1.3.6-r1  USE="-static-libs -test" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] x11-libs/libXv-1.0.11-r1  USE="-static-libs" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] x11-libs/libXres-1.2.0-r1  USE="-static-libs" 
+[ebuild  N     ] sys-block/thin-provisioning-tools-0.7.0  USE="-static -test" 
+[ebuild  N     ] x11-apps/xrandr-1.5.1 
+[ebuild  N     ] x11-libs/libfakekey-0.3  USE="-debug -doc" 
+[ebuild  N     ] media-libs/libdca-0.0.5-r3  USE="-debug -oss -static-libs" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] media-libs/faad2-2.9.0  USE="-digitalradio -static-libs" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] media-libs/a52dec-0.7.4-r7  USE="-djbfft -oss -static-libs" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] x11-apps/xmodmap-1.0.10 
+[ebuild  N     ] x11-libs/libXpresent-1.0.0-r1  USE="-static-libs" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] x11-apps/xdpyinfo-1.3.2  USE="-dga -dmx -xinerama" 
+[ebuild  N     ] media-sound/cdparanoia-3.10.2-r7  USE="-static-libs" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] media-libs/libdvdnav-6.0.0  USE="-static-libs" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] dev-libs/libatasmart-0.19_p5  USE="-static-libs" 
+[ebuild  N     ] sys-fs/lvm2-2.02.187-r2  USE="readline thin udev -device-mapper-only -lvm2create_initrd -sanlock (-selinux) -static -static-libs -systemd" 
+[ebuild  N     ] virtual/eject-0-r1 
+[ebuild  N     ] app-text/scrollkeeper-dtd-1.0-r1 
+[ebuild  N     ] dev-util/itstool-2.0.6-r1  PYTHON_SINGLE_TARGET="python3_7 -python3_6 (-python3_8)" 
+[ebuild  N     ] dev-perl/XML-SAX-1.0.0 
+[ebuild  N     ] sys-fs/cryptsetup-2.3.2  USE="argon2 nls openssl udev -gcrypt -kernel -libressl -luks1_default -nettle -pwquality -reencrypt -static -static-libs -urandom" 
+[ebuild  N     ] app-text/rarian-0.8.1-r3  USE="-static-libs" 
+[ebuild  N     ] media-libs/libexif-0.6.21-r3  USE="nls -doc -static-libs" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] dev-libs/libcdio-2.1.0-r1  USE="cxx -cddb -minimal -static-libs -test" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] dev-libs/libpwquality-1.4.2  USE="pam (split-usr) -python -static-libs" PYTHON_TARGETS="python3_7 -python3_6 (-python3_8)" 
+[ebuild  N     ] dev-libs/libbytesize-2.2  USE="-doc -python -test -tools" PYTHON_TARGETS="python3_7 -python3_6 (-python3_8)" 
+[ebuild  N     ] app-text/hunspell-1.7.0-r1  USE="ncurses nls readline -static-libs" L10N="-af -bg -ca -cs -cy -da -de -de-1901 -el -en -eo -es -et -fo -fr -ga -gl -he -hr -hu -ia -id -is -it -kk -km -ku -lt -lv -mi -mk -ms -nb -nl -nn -pl -pt -pt-BR -ro -ru -sk -sl -sq -sv -sw -tn -uk -zu" 
+[ebuild  N     ] dev-perl/XML-SAX-Expat-0.510.0  USE="-test" 
+[ebuild  N     ] x11-themes/sound-theme-freedesktop-0.8 
+[ebuild  N     ] dev-libs/libcdio-paranoia-0.94_p2-r2  USE="cxx -static-libs -test" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] app-text/enchant-2.2.8  USE="hunspell -aspell" 
+[ebuild  N     ] dev-perl/XML-Simple-2.250.0  USE="-test" 
+[ebuild  N     ] sys-power/cpupower-4.13.0  USE="nls" 
+[ebuild  N     ] media-libs/gstreamer-1.14.5  USE="caps introspection nls orc -test -unwind" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] dev-libs/libsigc++-2.10.1  USE="-doc -static-libs -test" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] mate-base/mate-menus-1.22.1-r1  USE="introspection -debug" 
+[ebuild  N     ] gnome-base/libgtop-2.40.0-r1  USE="introspection" 
+[ebuild  N     ] dev-libs/libgudev-233-r1  USE="introspection -static-libs" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] x11-misc/icon-naming-utils-0.8.90-r1 
+[ebuild  N     ] x11-themes/mate-backgrounds-1.22.0 
+[ebuild  N     ] sys-libs/libblockdev-2.23-r1  USE="cryptsetup tools -bcache -device-mapper -dmraid -escrow -gtk-doc -introspection -kbd -lvm -test -vdo" PYTHON_SINGLE_TARGET="python3_7 -python3_6 (-python3_8)" 
+[ebuild  N     ] gnome-extra/yelp-xsl-3.34.2 
+[ebuild  N     ] app-text/yelp-tools-3.32.2 
+[ebuild  N     ] dev-cpp/glibmm-2.62.0  USE="-debug -doc -test" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] x11-themes/mate-icon-theme-1.22.2 
+[ebuild  N     ] net-libs/libproxy-0.4.15-r1  USE="-gnome -kde -mono -networkmanager -spidermonkey -test -webkit" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] dev-cpp/atkmm-2.28.0  USE="-doc" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] media-sound/mpg123-1.25.10-r1  USE="alsa ipv6 sdl (-altivec) (-coreaudio) -int-quality -jack -nas -oss -portaudio -pulseaudio" ABI_X86="(64) -32 (-x32)" CPU_FLAGS_X86="sse (-3dnow) (-3dnowext) (-mmx)" 
+[ebuild  N     ] media-libs/libmpeg2-0.5.1-r2  USE="X sdl -static-libs" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] dev-python/pygments-2.6.1  USE="-doc -test" PYTHON_TARGETS="python3_7 (-pypy3) -python3_6 (-python3_8)" 
+[ebuild  N     ] dev-util/gtk-doc-1.32-r1  USE="-debug -doc -emacs" PYTHON_SINGLE_TARGET="python3_7 -python3_6" 
+[ebuild  N     ] net-libs/glib-networking-2.62.3  USE="gnome libproxy ssl -test" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] media-libs/graphene-1.8.6  USE="introspection -doc -test" ABI_X86="(64) -32 (-x32)" CPU_FLAGS_X86="sse2" 
+[ebuild  N     ] dev-libs/json-glib-1.4.4  USE="introspection -gtk-doc" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] media-libs/libmatemixer-1.22.0  USE="alsa -oss -pulseaudio" 
+[ebuild  N     ] app-text/iso-codes-4.4 
+[ebuild  N     ] net-libs/libpsl-0.21.0  USE="icu idn man" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] x11-libs/libxklavier-5.4  USE="introspection -vala" 
+[ebuild  N     ] net-libs/libsoup-2.70.0  USE="introspection ssl vala -brotli -gssapi -gtk-doc -samba -test" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] dev-cpp/cairomm-1.12.0-r1  USE="X svg (-aqua) -doc" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] dev-python/pycairo-1.18.2  USE="-doc -examples -test" PYTHON_TARGETS="python2_7 python3_7 (-pypy3) -python3_6 (-python3_8)" 
+[ebuild  N     ] dev-python/pygobject-3.34.0  USE="cairo -examples -test" PYTHON_TARGETS="python2_7 python3_7 -python3_6 (-python3_8)" 
+[ebuild  N     ] media-libs/gst-plugins-base-1.14.5-r1  USE="X alsa egl introspection nls ogg opengl orc pango vorbis -gbm -gles2 -ivorbis -theora -wayland" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] dev-cpp/pangomm-2.42.1  USE="-doc" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] media-libs/gst-plugins-good-1.14.5  USE="nls orc" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] media-libs/gst-plugins-ugly-1.14.3  USE="nls" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] media-plugins/gst-plugins-cdparanoia-1.14.5  ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] media-plugins/gst-plugins-a52dec-1.14.3  USE="orc" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] media-plugins/gst-plugins-dvdread-1.14.3  ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] media-plugins/gst-plugins-mpeg2dec-1.14.3  ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] media-plugins/gst-plugins-flac-1.14.5  ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] media-plugins/gst-plugins-mpg123-1.14.5  ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] media-plugins/gst-plugins-x264-1.14.3  ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] dev-libs/dbus-glib-0.110  USE="-debug -static-libs -test" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] sys-power/upower-0.99.11  USE="introspection -doc -ios (-selinux)" 
+[ebuild  N     ] sys-fs/udisks-2.8.4  USE="acl elogind introspection nls -debug -lvm (-selinux) -systemd -vdo" 
+[ebuild  N     ] app-crypt/gcr-3.34.0-r1  USE="gtk introspection vala -debug -test" 
+[ebuild  N     ] mate-base/mate-desktop-1.22.2  USE="X introspection startup-notification -debug" 
+[ebuild  N     ] x11-libs/libwnck-3.30.0  USE="introspection startup-notification -tools" 
+[ebuild  N     ] mate-base/libmatekbd-1.22.0  USE="X introspection -test" 
+[ebuild  N     ] dev-libs/libpeas-1.26.0  USE="gtk python -glade -gtk-doc -lua -luajit -test -vala" PYTHON_SINGLE_TARGET="python3_7 -python3_6 (-python3_8)" 
+[ebuild  N     ] x11-libs/gtksourceview-3.24.11  USE="introspection vala -glade -test" 
+[ebuild  N     ] dev-libs/libmateweather-1.22.0-r1  USE="-debug" 
+[ebuild  N     ] x11-misc/mozo-1.22.2  PYTHON_TARGETS="python3_7 -python3_6" 
+[ebuild  N     ] app-arch/engrampa-1.22.3-r1  USE="-caja -magic (-packagekit)" 
+[ebuild  N     ] mate-extra/mate-calc-1.22.2 
+[ebuild  N     ] dev-cpp/gtkmm-3.24.2  USE="X (-aqua) -doc -test -wayland" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] mate-extra/mate-polkit-1.22.0-r1  USE="-accountsservice -appindicator" 
+[ebuild  N     ] media-plugins/gst-plugins-gtk-1.14.5  USE="X egl opengl -gles2 -wayland" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] x11-libs/vte-0.58.3  USE="crypt introspection vala -debug -gtk-doc -vanilla" 
+[ebuild  N     ] gnome-extra/gucharmap-12.0.1  USE="introspection -debug -test -vala" 
+[ebuild  N     ] mate-base/mate-panel-1.22.2-r1  USE="X introspection -wayland" 
+[ebuild  N     ] media-libs/gst-plugins-bad-1.14.5  USE="X bzip2 egl gtk introspection nls opengl orc -gles2 -test -vcd -vnc -wayland" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] gnome-base/gvfs-1.42.2  USE="cdda elogind http policykit udev udisks -afp -archive -bluray -fuse -gnome-keyring -gnome-online-accounts -google -gphoto2 -ios -mtp -nfs -samba -systemd -test -zeroconf" 
+[ebuild  N     ] x11-terms/mate-terminal-1.22.1 
+[ebuild  N     ] app-editors/pluma-1.22.2  USE="introspection spell -test" PYTHON_SINGLE_TARGET="python2_7" 
+[ebuild  N     ] mate-extra/mate-system-monitor-1.22.2  USE="elogind -systemd" 
+[ebuild  N     ] media-gfx/eom-1.22.2  USE="X exif introspection jpeg lcms svg tiff -debug -xmp" 
+[ebuild  N     ] app-text/libspectre-0.2.8  USE="-debug -doc -static-libs" 
+[ebuild  N     ] app-text/atril-1.22.3  USE="dbus introspection postscript tiff -caja -debug -djvu -dvi -epub -gnome-keyring -t1lib -xps" 
+[ebuild  N     ] mate-extra/mate-netbook-1.22.2 
+[ebuild  N     ] media-plugins/gst-plugins-faad-1.14.5  ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] media-plugins/gst-plugins-dts-1.14.5  USE="orc" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] media-plugins/gst-plugins-resindvd-1.14.5  ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] media-plugins/gst-plugins-meta-1.14.3  USE="X a52 aac alsa cdda dts dvd flac mp3 mpeg ogg vorbis x264 -dv -dvb -ffmpeg -http -jack -lame -libass -libvisual -mms -modplug -opus -oss -pulseaudio -taglib -theora -v4l -vaapi -vcd -vpx -wavpack" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] media-libs/libcanberra-0.30-r5  USE="alsa gtk gtk3 sound udev -gnome -gstreamer -oss -pulseaudio -tdb" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] x11-themes/gtk-engines-2.20.2-r2  USE="-accessibility -lua" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] mate-extra/mate-media-1.22.2 
+[ebuild  N     ] mate-extra/mate-utils-1.22.2-r1  USE="X ipv6 -applet -debug -test" 
+[ebuild  N     ] app-crypt/libsecret-0.20.2  USE="crypt introspection vala -test" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] gnome-base/gnome-keyring-3.34.0  USE="caps filecaps pam ssh-agent (-selinux) -test" 
+[ebuild   R    ] app-crypt/pinentry-1.1.0-r2  USE="gnome-keyring*" 
+[ebuild  N     ] x11-libs/libnotify-0.7.8  USE="introspection -gtk-doc -test" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] x11-misc/mate-notification-daemon-1.22.1 
+[ebuild  N     ] virtual/notification-daemon-0  USE="-gnome -kde" 
+[ebuild  N     ] mate-base/mate-settings-daemon-1.22.1  USE="X libnotify policykit sound -debug -pulseaudio -rfkill -smartcard" 
+[ebuild  N     ] mate-base/caja-1.22.3-r1  USE="introspection mate (-packagekit) -test -xmp" 
+[ebuild  N     ] mate-extra/mate-power-manager-1.22.2  USE="applet elogind policykit -gnome-keyring -systemd -test" 
+[ebuild  N     ] sys-apps/gnome-disk-utility-3.34.5  USE="elogind -fat -gnome -systemd" 
+[ebuild  N     ] app-cdr/brasero-3.12.2-r1  USE="css introspection libburn mp3 -nautilus (-packagekit) -playlist -test -tracker" 
+[ebuild  N     ] gnome-extra/zenity-3.32.0  USE="libnotify -debug -webkit" 
+[ebuild  N     ] x11-wm/marco-1.22.4-r2  USE="startup-notification -test -xinerama" 
+[ebuild  N     ] mate-extra/caja-extensions-1.22.1  USE="cdr mail open-terminal wallpaper xattr -gajim -image-converter -pidgin -share -upnp" 
+[ebuild  N     ] mate-base/mate-applets-1.22.2-r1  USE="X cpupower ipv6 policykit upower" 
+[ebuild  N     ] mate-base/mate-applets-meta-1.22.0  USE="-appindicator -sensors" 
+[ebuild  N     ] mate-base/mate-control-center-1.22.2-r1  USE="-accountsservice -appindicator -debug" 
+[ebuild  N     ] x11-themes/gtk-engines-murrine-0.98.2-r1  USE="themes -animation-rtl" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] x11-themes/murrine-themes-0.98.0-r1 
+[ebuild  N     ] x11-themes/mate-themes-3.22.19 
+[ebuild  N     ] x11-themes/mate-themes-meta-3-r3  USE="-gtk2-only" 
+[ebuild  N     ] x11-misc/xdg-user-dirs-0.17  USE="gtk" 
+[ebuild  N     ] x11-misc/xdg-user-dirs-gtk-0.10-r1 
+[ebuild  N     ] mate-base/mate-session-manager-1.22.3-r2  USE="elogind ipv6 xtrans -debug -gnome-keyring -systemd" 
+[ebuild  N     ] mate-extra/mate-screensaver-1.22.2  USE="X elogind libnotify opengl pam -consolekit -debug -systemd" 
+[ebuild  N     ] mate-base/mate-1.22  USE="base extras notification themes (-bluetooth) -help" 
+
+The following USE changes are necessary to proceed:
+ (see "package.use" in the portage(5) man page for more details)
+# required by gnome-base/gnome-keyring-3.34.0::gentoo
+# required by mate-extra/mate-screensaver-1.22.2::gentoo[pam]
+# required by mate-base/mate-1.22::gentoo[extras]
+# required by mate-base/mate (argument)
+>=app-crypt/pinentry-1.1.0-r2 gnome-keyring
+
+Would you like to add these changes to your config files? [Yes/No] Yes
+
+...
+
+Autounmask changes successfully written.
+
+ * IMPORTANT: 2 config files in '/etc/portage' need updating.
+ * See the CONFIGURATION FILES and CONFIGURATION FILES UPDATE TOOLS
+ * sections of the emerge man page to learn how to update config files.
+<--
+
+#Crie o arquivo .xinitrc no home do usuário para que, quando você se logar no sistema e utilizar o comando "start x" a sessão possa começar com o MATE.
+-->
+cd /home/nilson
+<--
+
+-->
+vi .xinitrc
+ck-launch-session dbus-launch mate-session
+<--
+
+#Continuando...
+###Dê uma olhada nas configurações de data e hora. Caso seja necessário faça os passos a seguir
+-->
+cat /etc/conf.d/hwclock
+
+# Set CLOCK to "UTC" if your Hardware Clock is set to UTC (also known as
+# Greenwich Mean Time).  If that clock is set to the local time, then
+# set CLOCK to "local".  Note that if you dual boot with Windows, then
+# you should set it to "local".
+clock="UTC"
+
+# If you want the hwclock script to set the system time (software clock)
+# to match the current hardware clock during bootup, leave this
+# commented out.
+# However, you can set this to "NO" if you are running a modern kernel
+# and using NTP to synchronize your system clock.
+#clock_hctosys="YES"
+
+# If you do not want to set the hardware clock to the current system
+# time (software clock) during shutdown, set this to no.
+#clock_systohc="YES"
+
+# If you wish to pass any other arguments to hwclock during bootup,
+# you may do so here. Alpha users may wish to use --arc or --srm here.
+clock_args=""
+<--
+
+-->
+vi /etc/conf.d/hwclock
+
+clock="local"
+<--
+
+-->
+Obs.: formado do date: MMDDhhmm
+date 053014212020
+<--
+
+#Sincronize a hora
+-->
+hwclock -w
+<--
+###
+
+#Instalando o firefox
+-->
+emerge --search firefox
+
+setlocale: unsupported locale setting
+  
+[ Results for search key : firefox ]
+Searching...
+
+*  www-client/firefox
+      Latest version available: 68.8.0
+      Latest version installed: [ Not Installed ]
+      Size of files: 305.293 KiB
+      Homepage:      https://www.mozilla.com/firefox
+      Description:   Firefox Web Browser
+      License:       MPL-2.0 GPL-2 LGPL-2.1
+
+*  www-client/firefox-bin
+      Latest version available: 76.0.1
+      Latest version installed: [ Not Installed ]
+      Size of files: 66.514 KiB
+      Homepage:      https://www.mozilla.org/en-US/firefox/
+      Description:   Firefox Web Browser
+      License:       MPL-2.0 GPL-2 LGPL-2.1
+
+[ Applications found : 2 ]
+<--
+
+-->
+emerge www-client/firefox
+<--
+

@@ -1,0 +1,536 @@
+Instalação do gentoo
+
+Gentoo
+
+#Máquina hospedeira
+OS: ubuntu 20.04
+Sistema de inicialização: systemd
+
+Computador: Dell InspironONE 2330 - F520
+Hardware: RAM: 6GB; HD: 2TB, GPU: AMD Radeon HD 7650A de 1GB
+Arquitetura: 64bits
+
+#Baixe o stage3 do gentoo e o arquivo .DIGEST correspondente:
+-->
+https://gentoo.osuosl.org/releases/amd64/autobuilds/current-stage3-amd64/stage3-amd64-20200521T110126Z.tar.xz
+
+https://gentoo.osuosl.org/releases/amd64/autobuilds/current-stage3-amd64/install-amd64-minimal-20200521T110126Z.iso.DIGESTS
+<--
+
+#Sobre o arquivo .DIGEST serve para você comparar e ver se o arquivo baixado não foi corrompido durante o download. Por exemplo, para validar a soma de checagem SHA512:
+https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Stage/pt-br
+
+root #openssl dgst -r -sha512 stage3-amd64-<release>.tar.?(bz2|xz)
+Outra forma é usar o comando sha512sum:
+
+root #sha512sum stage3-amd64-<release>.tar.?(bz2|xz)
+Para validar a soma de checagem Whirlpool:
+
+root #openssl dgst -r -whirlpool stage3-amd64-<release>.tar.?(bz2|xz)
+Compare a saída desses comandos com o valor registrado nos arquivos .DIGESTS(.asc). Os valores devem bater, senão o arquivo baixado pode estar corrompido (ou o arquivo .DIGESTS está).
+
+Assim como com o arquivo ISO, é possível também verificar a assinatura criptográfica do arquivo .DIGESTS.asc usando o gpg para verificar que as somas de checagem não foram adulteradas.
+
+root #gpg --verify stage3-amd64-<release>.tar.?(bz2|xz){.DIGESTS.asc,}
+
+
+#Sobre o GPT
+https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Disks/pt-br
+
+
+
+GPT
+A configuração GPT ("GUID Partition Table" - Tabela de Partição GUID) usa identificadores de 64 bits para as partições. O local onde é armazenada a informação sobre as partições é muito maior que os 512 bytes da MBR o que significa que praticamente não há limite no número de partições de um disco GPT. Também o tamanho de uma partição tem um limite muito maior (quase 8 ZiB - sim, zebibytes).
+
+Quando a interface do software de sistema entre o sistema operacional e o firmware é a UEFI (em vez da BIOS), o GPT é praticamente mandatório uma vez que surgirão problemas de compatibilidade com a MBR aqui.
+
+A GPT também tem a vantagem de usar somas de checagem e redundância. Ele possui somas de checagem CRC32 para detectar erros no cabeçalho e tabelas de partição e tem um backup da GPT no final do disco. Esta tabela de backup pode ser usada para recuperar danos da GPT primária próxima do início do disco.
+
+GPT ou MBR
+Pela descrição acima, alguém pode imaginar que usar GPT é sempre o caminho recomendado, entretanto há alguns problemas.
+
+Usar GPT em um computador baseado em BIOS funciona, mas com isso não é possível fazer dual boot com um sistema operacional Microsoft Windows. A razão é que o Microsoft Windows irá inicializar em modo UEFI se ele detectar uma etiqueta de partição GPT.
+
+Alguns firmwares de placas mães configuradas para inicializar em modo BIOS/CSM/legado podem também ter problemas quando inicializar a partir de discos etiquetados como GPT. Nesse caso, pode ser possível contornar o problema adicionando o status "boot/active" à partição MBR, o que precisa ser feito através do fdisk com a opção -t dos para forçá-lo a ler a tabela de partição usando o formato MBR.
+
+
+#Começo 1: vamos começar digitando as linhas de comando no terminal do ubuntu (máquina hospedeira).
+-->
+sudo su
+
+mkdir /mnt/gentoo
+
+mkdir -p /mnt/gentoo/boot/EFI
+
+mount /dev/sda10 /mnt/gentoo
+
+cp /media/nilson/BB7B-525A/Gentoo/stage3-amd64-20200521T110126Z.tar.xz
+/mnt/gentoo/
+
+cd /mnt/gentoo
+
+tar xpfv stage3-amd64-20200521T110126Z.tar.xz --xattrs-include='*.*' --numeric-owner
+
+mount /dev/sda7 /mnt/gentoo/boot/EFI
+
+mount /dev/sda10 /mnt/gentoo
+
+cp /etc/resolv.conf /mnt/gentoo/etc/
+
+mount -t proc /proc/ /mnt/gentoo/proc/
+
+mount --rbind /sys/ /mnt/gentoo/sys/
+
+mount --rbind /dev/ /mnt/gentoo/dev/
+
+mount --make-rslave /mnt/gentoo/dev/
+
+mount --make-rslave /mnt/gentoo/sys/
+
+chroot /mnt/gentoo/ /bin/bash
+<--
+
+#Começo 2: criando um script para não ter que fazer no hospedeiro, na íntegra, novamente o Começo 1 novamente.
+--->
+#! /bin/bash
+if [[ "$1" == "-d" ]] ; then
+	umount -Rl /mnt/gentoo
+	echo 'Desmontado com sucesso!'
+	exit 0
+fi
+mount /dev/sda10 /mnt/gentoo
+mount /dev/sda7 /mnt/gentoo/boot/EFI
+mount -t proc /proc/ /mnt/gentoo/proc/
+mount --rbind /sys/ /mnt/gentoo/sys/
+mount --rbind /dev/ /mnt/gentoo/dev/
+mount --make-rslave /mnt/gentoo/dev/
+mount --make-rslave /mnt/gentoo/sys/
+chroot /mnt/gentoo /bin/bash
+<---
+
+
+
+
+#Tornar o arquivo executável:
+-->
+chmod +x ./gentoo.sh
+
+Mude para o usuário root:
+
+sudo su
+
+Execute o script:
+./gentoo.sh
+
+Uma vez montado desmonte com o comando:
+./gentoo.sh -d
+<--
+
+#continuando...
+-->
+export PS1="gentoo $PS1"
+
+mkdir /etc/portage/repos.conf
+
+cp /usr/share/portage/config/repos.conf /etc/portage/repos.conf/gentoo.conf
+
+emerge-webrsync
+<--
+
+#Para ver o arquivo make.conf
+-->
+nano /etc/portage/make.conf
+<--
+
+#Para instalar o vim, parted e o mirrorselect
+-->
+emerge -a vim parted mirrorselect
+<--
+
+-->
+mirrorselect -i -o >> /etc/portage/make.conf
+obs.: o mirrorselect utiliza a biblioteca ncourse**
+<--
+
+
+
+
+
+
+
+
+#Agora dê novamente uma olhada no arquivo make.conf
+-->
+vim /etc/portage/make.conf
+
+# These settings were set by the catalyst build script that automatically
+# built this stage.
+# Please consult /usr/share/portage/config/make.conf.example for a more
+# detailed example.
+COMMON_FLAGS="-O2 -pipe"
+CFLAGS="${COMMON_FLAGS}"
+CXXFLAGS="${COMMON_FLAGS}"
+FCFLAGS="${COMMON_FLAGS}"
+FFLAGS="${COMMON_FLAGS}"
+GRUB_PLATFORMS="efi-64"
+
+# NOTE: This stage was built with the bindist Use flag enabled
+PORTDIR="/var/db/repos/gentoo"
+DISTDIR="/var/cache/distfiles"
+PKGDIR="/var/cache/binpkgs"
+
+# This sets the language of build output to English.
+# Please keep this setting intact when reporting bugs.
+LC_MESSAGES=C
+
+GENTOO_MIRRORS="https://gentoo.c3sl.ufpr.br/ http://gentoo.c3sl.ufpr.br/ rsync://gentoo.c3sl.ufpr.br/gentoo/"
+<--
+
+#É bom dar uma olhada em:
+-->
+emerge --info
+<--
+
+-->
+eselect profile list
+Available profile symlink targets:
+  [1]   default/linux/amd64/17.0 (stable)
+  [2]   default/linux/amd64/17.0/selinux (stable)
+  [3]   default/linux/amd64/17.0/hardened (stable)
+  [4]   default/linux/amd64/17.0/hardened/selinux (stable)
+  [5]   default/linux/amd64/17.0/desktop (stable)
+  [6]   default/linux/amd64/17.0/desktop/gnome (stable)
+  [7]   default/linux/amd64/17.0/desktop/gnome/systemd (stable)
+  [8]   default/linux/amd64/17.0/desktop/plasma (stable)
+  [9]   default/linux/amd64/17.0/desktop/plasma/systemd (stable)
+  [10]  default/linux/amd64/17.0/developer (stable)
+  [11]  default/linux/amd64/17.0/no-multilib (stable)
+  [12]  default/linux/amd64/17.0/no-multilib/hardened (stable)
+  [13]  default/linux/amd64/17.0/no-multilib/hardened/selinux (stable)
+  [14]  default/linux/amd64/17.0/systemd (stable)
+  [15]  default/linux/amd64/17.0/x32 (dev)
+  [16]  default/linux/amd64/17.1 (stable) *
+  [17]  default/linux/amd64/17.1/selinux (stable)
+  [18]  default/linux/amd64/17.1/hardened (stable)
+  [19]  default/linux/amd64/17.1/hardened/selinux (stable)
+  [20]  default/linux/amd64/17.1/desktop (stable)
+  [21]  default/linux/amd64/17.1/desktop/gnome (stable)
+  [22]  default/linux/amd64/17.1/desktop/gnome/systemd (stable)
+  [23]  default/linux/amd64/17.1/desktop/plasma (stable)
+  [24]  default/linux/amd64/17.1/desktop/plasma/systemd (stable)
+  [25]  default/linux/amd64/17.1/developer (stable)
+  [26]  default/linux/amd64/17.1/no-multilib (stable)
+  [27]  default/linux/amd64/17.1/no-multilib/hardened (stable)
+  [28]  default/linux/amd64/17.1/no-multilib/hardened/selinux (stable)
+  [29]  default/linux/amd64/17.1/systemd (stable)
+  [30]  default/linux/amd64/17.0/musl (exp)
+  [31]  default/linux/amd64/17.0/musl/hardened (exp)
+  [32]  default/linux/amd64/17.0/musl/hardened/selinux (exp)
+  [33]  default/linux/amd64/17.0/uclibc (exp)
+  [34]  default/linux/amd64/17.0/uclibc/hardened (exp)
+
+#Escolhendo o profile
+eselect profile set 16
+<--
+
+#Por curiosidade dê uma olhada no arquivo world para ver todos os aplicativos que serão atualizados no sistema com o comando a seguir
+-->
+vim /var/lib/portage/world
+app-editors/vim
+app-portage/mirrorselect
+<--
+
+#Neste momento fui atrás da documentação oficial para ver como funciona a questão do /boot/efi:
+
+#Uma nota para os usuários UEFI: executar o comando acima irá mostrar os valores GRUB_PLATFORMS habilitados antes de se fazer o emerge. Quando usarem sistemas UEFI, os usuários irão precisar ter certeza que GRUB_PLATFORMS="efi-64" está habilitado (como é o caso por padrão). Se isso não for necessário para a configuração, GRUB_PLATFORMS="efi-64" precisa ser adicionado ao arquivo /etc/portage/make.conf antes de fazer o emerge do GRUB2 para que este pacote seja compilado com a funcionalidade EFI:
+#https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Bootloader/pt-br
+-->
+echo 'GRUB_PLATFORMS="efi-64"' >> /etc/portage/make.conf
+<--
+
+#Documentação oficial do gentoo para dar uma olhada nas partições do disco
+--->
+parted -a optimal /dev/sda
+GNU Parted 3.2
+Using /dev/sda
+Welcome to GNU Parted! Type 'help' to view a list of commands.
+(parted) <print>
+
+Model: ATA ST2000DM001-1CH1 (scsi)
+Disk /dev/sda: 2000GB
+Sector size (logical/physical): 512B/4096B
+Partition Table: gpt
+Disk Flags: 
+
+Number  Start   End     Size    File system     Name                  Flags
+ 1      1049kB  2149MB  2147MB  ext4            boot
+ 2      2149MB  2778MB  629MB   fat32           EFI System Partition  boot, esp
+ 3      2778MB  7073MB  4295MB  linux-swap(v1)  swap
+ 4      7073MB  416GB   409GB   ext4            manjaro
+12      416GB   417GB   629MB   fat32           EFI System Partition  boot, esp
+ 5      417GB   825GB   408GB   ext4
+ 6      825GB   826GB   315MB   fat32           EFI System Partition  boot, esp
+ 9      826GB   1234GB  409GB   ext4            deepin
+ 7      1234GB  1235GB  628MB   fat32           EFI System Partition  boot, esp*
+10      1235GB  1643GB  408GB   ext4            popos
+11      1643GB  1644GB  629MB   fat32           EFI System Partition  boot, esp
+ 8      1644GB  1697GB  52,4GB  ext4            Mint
+13      1697GB  2000GB  304GB   ext4            Mint - Home
+
+(parted) <set 7 boot on>   *Obs.: desnecessário esse comando pq a partição 7 já estava "boot on"
+
+(parted) <quit>
+<---
+
+#Configurando locais
+A maioria dos usuários irá querer usar apenas um ou dois locais em seus sistemas.
+Locais especificam não apenas a língua que o sistema deve usar para interagir com o usuário, mas também as regras para ordenar strings, mostrar data e hora etc.
+Os locais que um sistema deve suportar devem ser entrados em /etc/locale.gen.
+
+--->
+vim /etc/locale.gen
+#en_US ISO-8859-1
+#en_US.UTF-8 UTF-8
+#ja_JP.EUC-JP EUC-JP
+#ja_JP.UTF-8 UTF-8
+#ja_JP EUC-JP
+#en_HK ISO-8859-1
+#en_PH ISO-8859-1
+#de_DE ISO-8859-1
+#de_DE@euro ISO-8859-15
+#es_MX ISO-8859-1
+#fa_IR UTF-8
+#fr_FR ISO-8859-1
+#fr_FR@euro ISO-8859-15
+#it_IT ISO-8859-1
+<--
+
+#Inclua o pt_BR.UTF-8
+-->
+echo pt_BR.UTF-8 >> /etc/locale.gen
+<--
+
+#O próximo passo é executar locale-gen. Isso irá regerar todos os locais especificados no arquivo /etc/locale.gen.
+-->
+locale-gen
+<---
+
+#Ajustando a configuração geral de local do sistema
+Uma vez feito, é agora hora de ajustar a configuração geral de local do sistema. Novamente usamos o eselect para isso, agora com o módulo locale.
+Com o eselect locale list, os alvos disponíveis são mostrados.
+--->
+eselect locale list | grep pt_
+
+Available targets for the LANG variable:
+  [1]   C
+  [2]   POSIX
+  [3]   pt_BR
+  [4]   pt_BR.ansix341968
+  [5]   pt_BR.utf8
+  [ ]   (free form)
+
+eselect locale set 5
+Setting LANG to pt_BR.utf8 ...
+Run ". /etc/profile" to update the variable in your shell.
+
+. /etc/profile
+<---
+
+#Ajustando o timezone
+--->
+ls /usr/share/zoneinfo/America/
+Adak       Bahia_Banderas  Cancún         Cuiaba        Ensenada     Guayaquil     Juneau         Manaus       Moncton       Nuuk            Punta_Arenas  Santo_Domingo  Swift_Current  Yakutat
+Anchorage  Barbados        Caracas        Curacao       Fortaleza    Guyana        Kentucky       Marigot      Monterrey     Ojinaga         Rainy_River   Sao_Paulo      Tegucigalpa    Yellowknife
+Anguilla   Belem           Catamarca      Danmarkshavn  Fort_Nelson  Halifax       Knox_IN        Martinique   Montevideo    Panama          Rankin_Inlet  Scoresbysund   Thule
+Antigua    Belize          Cayenne        Dawson        Fort_Wayne   Havana        Kralendijk     Matamoros    Montreal      Pangnirtung     Recife        Shiprock       Thunder_Bay
+Araguaina  Blanc-Sablon    Cayman         Dawson_Creek  Glace_Bay    Hermosillo    La_Paz         Mazatlan     Montserrat    Paramaribo      Regina        Sitka          Tijuana
+Argentina  Boa_Vista       Chicago        Denver        Godthab      Indiana       Lima           Mendoza      Nassau        Phoenix         Resolute      St_Barthelemy  Toronto
+Aruba      Bogota          Chihuahua      Detroit       Goose_Bay    Indianapolis  Los_Angeles    Menominee    New_York      Port-au-Prince  Rio_Branco    St_Johns       Tortola
+Asuncion   Boise           Coral_Harbour  Dominica      Grand_Turk   Inuvik        Louisville     Merida       Nipigon       Porto_Acre      Rosario       St_Kitts       Vancouver
+Atikokan   Buenos_Aires    Cordoba        Edmonton      Grenada      Iqaluit       Lower_Princes  Metlakatla   Nome          Port_of_Spain   Santa_Isabel  St_Lucia       Virgin
+Atka       Cambridge_Bay   Costa_Rica     Eirunepe      Guadeloupe   Jamaica       Maceio         Mexico_City  Noronha       Porto_Velho     Santarem      St_Thomas      Whitehorse
+Bahia      Campo_Grande    Creston        El_Salvador   Guatemala    Jujuy         Managua        Miquelon     North_Dakota  Puerto_Rico     Santiago      St_Vincent     Winnipeg
+<--
+
+
+
+
+
+#Copie a zona de Belém para dentro do arquivo /etc/timezone que até este momento não existe.
+-->
+echo "America/Belem" > /etc/timezone
+<---
+
+#A seguir, configure novamente o pacote sys-libs/timezone-data, o que irá atualizar o arquivo /etc/localtime para nós, baseado no /etc/timezone. O arquivo /etc/localtime é usado pela biblioteca C do sistema para saber em qual fuso horário o sistema está.
+--->
+emerge --config sys-libs/timezone-data
+
+Configuring pkg...
+
+ * Updating /etc/localtime with /usr/share/zoneinfo/America/Belem
+<---
+
+#Agora recarregue o ambiente:
+--->
+env-update && source /etc/profile && export PS1="(chroot) ${PS1}"
+<---
+
+#Configure o arquivo /etc/fstab
+--->
+/dev/sda7       /boot/EFI       vfat    defaults        0 0
+/dev/sda3       none            swap    sw              0 0
+/dev/sda10      /               ext4    defaults        0 1
+<---
+
+#Continuando...
+
+-->
+emerge --ask -deep --update --newuse @world (não entendi qual é a desse comando)
+<--
+
+#Gerando o arquivo make.config
+-->
+emerge -auDN @world
+<--
+
+
+
+
+
+
+#No ubuntu(hospedeiro), use o comando lspci para ver/conhecer o hardware do seu computador
+
+lspci
+
+00:00.0 Host bridge: Intel Corporation Xeon E3-1200 v2/3rd Gen Core processor DRAM Controller (rev 09)
+00:01.0 PCI bridge: Intel Corporation Xeon E3-1200 v2/3rd Gen Core processor PCI Express Root Port (rev 09)
+00:02.0 VGA compatible controller: Intel Corporation Xeon E3-1200 v2/3rd Gen Core processor Graphics Controller (rev 09)
+00:14.0 USB controller: Intel Corporation 7 Series/C210 Series Chipset Family USB xHCI Host Controller (rev 04)
+00:16.0 Communication controller: Intel Corporation 7 Series/C216 Chipset Family MEI Controller #1 (rev 04)
+00:1a.0 USB controller: Intel Corporation 7 Series/C216 Chipset Family USB Enhanced Host Controller #2 (rev 04)
+00:1b.0 Audio device: Intel Corporation 7 Series/C216 Chipset Family High Definition Audio Controller (rev 04)
+00:1c.0 PCI bridge: Intel Corporation 7 Series/C216 Chipset Family PCI Express Root Port 1 (rev c4)
+00:1c.2 PCI bridge: Intel Corporation 7 Series/C210 Series Chipset Family PCI Express Root Port 3 (rev c4)
+00:1c.5 PCI bridge: Intel Corporation 7 Series/C210 Series Chipset Family PCI Express Root Port 6 (rev c4)
+00:1d.0 USB controller: Intel Corporation 7 Series/C216 Chipset Family USB Enhanced Host Controller #1 (rev 04)
+00:1e.0 PCI bridge: Intel Corporation 82801 PCI Bridge (rev a4)
+00:1f.0 ISA bridge: Intel Corporation B75 Express Chipset LPC Controller (rev 04)
+00:1f.2 SATA controller: Intel Corporation 7 Series/C210 Series Chipset Family 6-port SATA Controller [AHCI mode] (rev 04)
+00:1f.3 SMBus: Intel Corporation 7 Series/C216 Chipset Family SMBus Controller (rev 04)
+01:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Turks [Radeon HD 7650A/7670A]
+02:00.0 Network controller: Qualcomm Atheros AR9485 Wireless Network Adapter (rev 01)
+03:00.0 Unassigned class [ff00]: Realtek Semiconductor Co., Ltd. RTS5209 PCI Express Card Reader (rev 01)
+03:00.1 SD Host controller: Realtek Semiconductor Co., Ltd. RTS5209 PCI Express Card Reader (rev 01)
+04:00.0 Ethernet controller: Qualcomm Atheros AR8161 Gigabit Ethernet (rev 10)
+
+
+
+
+#Por curiosidade, dê uma olhada no diretório /usr/src/linux/, que é onde o kernel baixado vai ficar. Você vai perceber que não tem nada nesse diretório.
+-->
+ls -lh /usr/src/
+<--
+
+#Mude para o diretório /usr/src/
+-->
+cd /usr/src
+<--
+
+#Agora baixe e instale o kernel linux com o seguinte comando
+-->
+emerge -a gentoo-sources
+<--
+
+#Agora, por curiosidade, novamente, dê uma olhada no diretório /usr/src/linux/ que você verá que agora o kernel está instalado.
+-->
+ls -lh /usr/src/
+lrwxrwxrwx  1 root root   19 mai 22 22:32 linux -> linux-5.4.38-gentoo
+drwxr-xr-x 25 root root 4,0K mai 22 22:32 linux-5.4.38-gentoo
+<--
+
+Obs.: Neste momento o /boot ainda não tem nada.
+-->
+ls -lh /boot
+lost+found
+<--
+
+#Agora, vá para dentro do diretório linux
+-->
+cd /usr/src/linux
+<--
+
+#Neste momento você pode compilar o kernel com a ajuda do ncourse, caso queira.
+
+#Agora a festa vai começar: crie o arquivo .config com o seguinte comando
+Obs.: Nesse momento você tem que escolher tudo o que irá e o que não irá no seu kernel. É muito importante essa etapa.
+-->
+make menuconfig
+<--
+
+
+
+
+#Compilando o kernel
+make && make modules_install && make install
+
+Obs.: O make install copia alguns arquivos para o /boot
+-->
+ls -lh /boot
+-rwxr-xr-x 1 root root 111K mai 23 01:35 config-5.4.38-gentoo
+-rwxr-xr-x 1 root root 4,2M mai 23 01:35 System.map-5.4.38-gentoo
+-rwxr-xr-x 1 root root 8,9M mai 23 01:35 vmlinuz-5.4.38-gentoo
+<--
+
+Obs.: Outro comando interessante em /usr/src/linux/.config para ver tudo o que foi habilitado
+-->
+cat .config
+<--
+
+#Instale o grub
+-->
+emerge -a grub
+<--
+
+#Vendo como o efivars está montado
+-->
+mount | grep efivars
+efivarfs on /sys/firmware/efi/efivars type efivarfs (rw,nosuid,nodev,noexec,relatime)
+<--
+
+#Se o comando acima der erro, monte novamente o "efivars" com direito a ler e gravar
+-->
+mount -o remount,rw /sys/firmware/efi/efivars
+<--
+
+#Agora, instale o linux com o grub
+-->
+grub-install --target=x86_64-efi --efi-directory=/boot/EFI/
+Instalando para a plataforma x86_64-efi.
+Instalacao terminada. Sem erros reportados.
+
+grub-mkconfig -o /boot/grub/grub.conf
+<--
+
+
+
+
+
+#Crie a senha do root com o passwd
+-->
+passwd
+senha:
+<--
+
+#Saia do gentoo
+-->
+exit
+<--
+
+#Desmonte todas as partições que foram montadas antes.
+--->
+gentoo.sh -d
+Desmontado com sucesso!
+<---
+
+#De o boot no sistema, se tudo der certo o gentoo vai estar lá.
+

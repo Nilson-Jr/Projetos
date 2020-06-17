@@ -1,0 +1,21 @@
+Fontes
+
+#Instalar várias fontes para o gentoo
+
+#Clonando as fontes
+-->
+git clone https://github.com/terroo/fonts.git
+<--
+
+#Copiando as fontes para o local correto
+-->
+cd /fonts
+
+sudo cp *.ttf /usr/share/fonts/TTF
+sudo cp *.otf /usr/share/fonts/OTF
+<--
+
+#Copiando as fontes para o cache
+-->
+fc-cache -fv
+<--

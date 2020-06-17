@@ -2,9 +2,12 @@
 #Pressupõe ainda que o diretório do projeto já conterá vários diretórios e arquivos.
 #Pressupõe, finalmente, que você já possua um repositório remoto criado.
 
-#Informações sobre o sistema:
-- Sistema operacional: Ubuntu 20.04
-- Máquina:
+#Máquina hospedeira
+OS: ubuntu 20.04
+Sistema de inicialização: systemd
+
+Computador: Dell InspironONE 2330 - F520
+Hardware: RAM: 6GB; HD: 2TB, GPU: AMD Radeon HD 7650A de 1GB
 
 #Configurando o usuário e o e-mail
 -->

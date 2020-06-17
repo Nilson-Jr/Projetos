@@ -1,0 +1,148 @@
+Icedtea/Javaws
+
+#Primeiramente pesquisar que versão do programa existe nos repositórios do gentoo
+-->
+sudo emerge --search icedtea
+  
+[ Results for search key : icedtea ]
+Searching...
+
+*  dev-java/icedtea [ Masked ]
+      Latest version available: 3.16.0
+      Latest version installed: [ Not Installed ]
+      Size of files: 60.493 KiB
+      Homepage:      https://icedtea.classpath.org
+      Description:   A harness to build OpenJDK using Free Software build tools and dependencies
+      License:       Apache-1.1 Apache-2.0 GPL-1 GPL-2 GPL-2-with-linking-exception LGPL-2 MPL-1.0 MPL-1.1 public-domain W3C
+
+*  dev-java/icedtea-bin
+      Latest version available: 3.16.0
+      Latest version installed: [ Not Installed ]
+      Size of files: 60.890 KiB
+      Homepage:      http://icedtea.classpath.org
+      Description:   A Gentoo-made binary build of the IcedTea JDK
+      License:       GPL-2-with-classpath-exception
+
+*  dev-java/icedtea-sound
+      Latest version available: 1.0.1
+      Latest version installed: [ Not Installed ]
+      Size of files: 1.480 KiB
+      Homepage:      http://icedtea.classpath.org
+      Description:   Plugins for javax.sound
+      License:       GPL-2-with-linking-exception
+
+*  dev-java/icedtea-web [ Masked ]
+      Latest version available: 1.6.2
+      Latest version installed: [ Not Installed ]
+      Size of files: 1.782 KiB
+      Homepage:      http://icedtea.classpath.org
+      Description:   FOSS Java browser plugin and Web Start implementation
+      License:       GPL-2 GPL-2-with-linking-exception LGPL-2
+
+[ Applications found : 4 ]
+<--
+
+#Tratando o mascaramentos dos dois pacotes escolhidos anteriormente
+#Edite o arquivo /etc/portage/package.accept_keyword e coloque o nome dos pacotes a serem mascarados
+-->
+sudo vim /etc/portage/package.accept_keyword
+
+x11-misc/urxvtconfig  ~amd64
+dev-java/icedtea      ~amd64
+dev-java/icedtea-web  ~amd64
+<--
+
+#Utilizando o equery(que foi instalado com o genttolkit), para ver quais flags estão setadas por padrão nos pacotes dev-java/icedtea e dev-java/icedtea-web
+-->
+sudo equery uses dev-java/icedtea
+[ Legend : U - final flag setting for installation]
+[        : I - package is installed with flag     ]
+[ Colors : set, unset                             ]
+ * Found these USE flags for dev-java/icedtea-3.16.0:
+ U I
+ + + alsa         : Add support for media-libs/alsa-lib (Advanced Linux Sound Architecture)
+ + + cups         : Link against the CUPS library at compile time, rather than using it dynamically at runtime.
+ - - doc          : Add extra documentation (API, Javadoc, etc). It is recommended to enable per package instead of globally
+ - - examples     : Install examples, usually source code
+ + + gtk          : Add support for x11-libs/gtk+ (The GIMP Toolkit)
+ - - headless-awt : Don't install the X backend for AWT, needed by some GUIs (used to be X flag)
+ + - jbootstrap   : If possible, recompile the final IcedTea executables with itself.
+ - - kerberos     : Link against Kerberos in order to obtain the cache location.
+ - - libressl     : Use dev-libs/libressl instead of dev-libs/openssl when applicable (see also the ssl useflag)
+ - - pax_kernel   : Apply patch needed for pax enabled kernels.
+ + - pch          : Build using pre-compiled headers.
+ - - pulseaudio   : Add support for PulseAudio sound server
+ - - sctp         : Build the SCTP NIO channel implementation against lksctp
+ - - shenandoah   : Include the Shenandoah ultra-low pause time garbage collector (-XX:+UseShenandoahGC) (arm64 and x86_64 only)
+ - - smartcard    : Build the PCSC driver against pcsc-lite
+ + - source       : Zip the sources and install them
+ + - system-lcms  : Build against the system LCMS installation rather than the in-tree copy.
+ - - test         : Enable dependencies and/or preparations necessary to run tests (usually controlled by FEATURES=test but can be toggled independently)
+ - - zero         : Enable Zero assembler port (usually for non-HotSpot architectures)
+<--
+
+-->
+sudo equery uses dev-java/icedtea-web
+
+[ Legend : U - final flag setting for installation]
+[        : I - package is installed with flag     ]
+[ Colors : set, unset                             ]
+ * Found these USE flags for dev-java/icedtea-web-1.6.2:
+ U I
+ - - doc        : Add extra documentation (API, Javadoc, etc). It is recommended to enable per package instead of globally
+ - - javascript : Enable support for using proxy auto config (PAC) files.
+ - - nsplugin   : Enable the browser plugin (NPPlugin).
+ - - tagsoup    : Depend on dev-java/tagsoup which allows parsing malformed .jnlp files
+ - - test       : Enable dependencies and/or preparations necessary to run tests (usually controlled by FEATURES=test but can be toggled independently)
+<--
+
+#Habilitando a flag nsplugin no pacote dev-java/icedtea-web
+Obs.: No meu caso o comando abaixo só funciona como root. O sudo ele não aceita.
+-->
+sudo echo ">=dev-java/icedtea-web-1.6.2 nsplugin" | tee -a /etc/portage/package.use/zz-autounmask
+
+>=dev-java/icedtea-web-1.6.2 nsplugin
+<--
+
+
+
+
+
+#Repetindo o comando equery para ver se a flag nsplugin foi setada.
+-->
+sudo equery uses dev-java/icedtea-web
+
+[ Legend : U - final flag setting for installation]
+[        : I - package is installed with flag     ]
+[ Colors : set, unset                             ]
+ * Found these USE flags for dev-java/icedtea-web-1.6.2:
+ U I
+ - - doc        : Add extra documentation (API, Javadoc, etc). It is recommended to enable per package instead of globally
+ - - javascript : Enable support for using proxy auto config (PAC) files.
+ + - nsplugin   : Enable the browser plugin (NPPlugin).
+ - - tagsoup    : Depend on dev-java/tagsoup which allows parsing malformed .jnlp files
+ - - test       : Enable dependencies and/or preparations necessary to run tests (usually controlled by FEATURES=test but can be toggled independently)
+<--
+
+#Instalando os dois pacotes dev-java/icedtea e dev-java/icedtea-web
+-->
+sudo emerge --ask dev-java/icedtea-web
+
+Obs.: Neste ponto, houve um erro de mascaramento. Apesar de tratar do mesmo no arquivo /etc/portage/package.accept_keywords, com nos outros casos, nunca que dava certo. Foi preciso editar o arquivo /var/db/repos/gentoo/profiles/package.mask e comentar a seguinte linha:
+
+# Georgy Yakovlev <gyakovlev@gentoo.org> (2020-03-27)
+# Vulnerable old version of icedtea-web #711392
+# new version is not packaged yet
+# package is not going away anytime soon, just masked
+# for security. unmask as needed.
+# dev-java/icedtea-web
+
+Obs.: Percebe-se que há vulnerabilidades, mas eu resolvi instalar assim mesmo.
+<--
+
+#Não foi preciso instalar o dev-java/icedtea. O icedtea-web resolveu sozinho o meu problema.
+
+
+
+#Fonte
+https://forums.gentoo.org/viewtopic-t-997532-start-0.html

@@ -1,0 +1,198 @@
+Totem
+
+#Instalação
+-->
+sudo emerge --ask media-video/totem
+<--
+
+#Sintoma:
+Ao tentar rodar um vídeo com o totem a tela ficava sem video e sem audio. Nos erros verifiquei que sempre recebia este erro:
+
+“Missing plugin: gstreamer|1.0|totem|Decodificador Opus”
+
+#Solucao
+#Instalar o pacote media-plugins/gst-plugins-meta com o flag ffmpeg habilitado.
+#Primeiro, dar uma olhada no arquivo /etc/portage/package.use/zz-autounmas
+-->
+cat /etc/portage/package.use/zz-autounmas
+
+# package.use# required by www-client/firefox-68.8.0::gentoo[system-libvpx]
+# required by www-client/firefox (argument)
+>=media-libs/libvpx-1.7.0-r1 postproc
+# required by www-client/firefox-68.8.0::gentoo[system-sqlite]
+# required by www-client/firefox (argument)
+>=dev-db/sqlite-3.31.1 secure-delete
+# required by gnome-base/gnome-keyring-3.34.0::gentoo
+# required by mate-extra/mate-screensaver-1.22.2::gentoo[pam]
+# required by mate-base/mate-1.22::gentoo[extras]
+# required by mate-base/mate (argument)
+>=app-crypt/pinentry-1.1.0-r2 gnome-keyring
+# required by mate-extra/mate-user-share-1.22.1::gentoo
+# required by mate-extra/mate-user-share (argument)
+>=www-servers/apache-2.4.41 apache2_modules_auth_digest
+>=x11-misc/lightdm-1.28.0 audit vala
+# required by sys-auth/sssd-1.16.3-r3::gentoo
+# required by app-admin/sudo-1.8.31::gentoo[sssd]
+# required by app-admin/sudo (argument)
+>=net-nds/openldap-2.4.50 sasl
+# required by app-admin/sudo-1.8.31::gentoo[sssd]
+# required by app-admin/sudo (argument)
+>=sys-auth/sssd-1.16.3-r3 sudo
+# required by sys-auth/sssd-1.16.3-r3::gentoo
+# required by app-admin/sudo-1.8.31::gentoo[sssd]
+# required by app-admin/sudo (argument)
+>=net-dns/bind-tools-9.14.8 gssapi
+# required by sys-auth/sssd-1.16.3-r3::gentoo
+# required by app-admin/sudo-1.8.31::gentoo[sssd]
+# required by app-admin/sudo (argument)
+>=dev-libs/cyrus-sasl-2.1.27-r3 kerberos
+# required by sys-auth/sssd-1.16.3-r3::gentoo
+# required by app-admin/sudo-1.8.31::gentoo[sssd]
+# required by app-admin/sudo (argument)
+>=sys-libs/glibc-2.30-r8 nscd
+>=media-libs/libmediaart-1.9.4 -qt5
+>=app-admin/sudo-1.8.31 gcrypt -libressl offensive sasl skey -pam -sssd -ldap system-digest
+<--
+
+
+#Segundo, ver os flags habilitados para o pacote media-plugins/gst-plugins-meta:
+-->
+sudo equery uses media-plugins/gst-plugins-meta
+
+[ Legend : U - final flag setting for installation]
+[        : I - package is installed with flag     ]
+[ Colors : set, unset                             ]
+ * Found these USE flags for media-plugins/gst-plugins-meta-1.14.3:
+ U I
+ + + X          : Add support for X11
+ + + a52        : Enable support for decoding ATSC A/52 streams used in DVD
+ + + aac        : Enable support for MPEG-4 AAC Audio
+ - - abi_x86_32 : 32-bit (x86) libraries
+ + + alsa       : Add support for media-libs/alsa-lib (Advanced Linux Sound Architecture)
+ + + cdda       : Add Compact Disk Digital Audio (Standard Audio CD) support
+ + + dts        : Enable DTS Coherent Acoustics decoder support
+ - - dv         : Enable support for a codec used by many camcorders
+ - - dvb        : Add support for DVB (Digital Video Broadcasting)
+ + + dvd        : Add support for DVDs
+ - - ffmpeg     : Enable ffmpeg/libav-based audio/video codec support
+ + + flac       : Add support for FLAC: Free Lossless Audio Codec
+ - - http       : Enable http streaming via net-libs/libsoup
+ - - jack       : Add support for the JACK Audio Connection Kit
+ - - lame       : Prefer using LAME libraries for MP3 encoding support
+ - - libass     : SRT/SSA/ASS (SubRip / SubStation Alpha) subtitle support
+ - - libvisual  : Enable visualization effects via media-libs/libvisual
+ - - mms        : Support for Microsoft Media Server (MMS) streams
+ - - modplug    : Add libmodplug support for playing SoundTracker-style music files
+ + + mp3        : Add support for reading mp3 files
+ + + mpeg       : Add libmpeg3 support to various packages
+ + + ogg        : Add support for the Ogg container format (commonly used by Vorbis, Theora and flac)
+ - - opus       : Enable Opus audio codec support
+ - - oss        : Add support for OSS (Open Sound System)
+ - - pulseaudio : Add support for PulseAudio sound server
+ - - taglib     : Enable tagging support with taglib
+ - - theora     : Add support for the Theora Video Compression Codec
+ - - v4l        : Enable support for video4linux (using linux-headers or userspace libv4l libraries)
+ - - vaapi      : Enable Video Acceleration API for hardware decoding
+ - - vcd        : Video CD support
+ + + vorbis     : Add support for the OggVorbis audio codec
+ - - vpx        : Enables vp8 codec support using libvpx, required to play some HTML5 videos
+ - - wavpack    : Add support for wavpack audio compression tools
+ + + x264       : Enable h264 encoding using x264
+<--
+
+#Terceiro, habilitar o flag ffmpeg para o pacote media-plugins/gst-plugins-meta
+-->
+echo ">=app-admin/media-plugins/gst-plugins-meta-1.14.3 ffmpeg" | tee -a /etc/portage/package.use/zz-autounmask
+<--
+
+#Quarto, dar novamente uma olhada no arquivo zz-autounmas
+-->
+cat /etc/portage/package.use/zz-autounmas
+
+# package.use# required by www-client/firefox-68.8.0::gentoo[system-libvpx]
+# required by www-client/firefox (argument)
+>=media-libs/libvpx-1.7.0-r1 postproc
+# required by www-client/firefox-68.8.0::gentoo[system-sqlite]
+# required by www-client/firefox (argument)
+>=dev-db/sqlite-3.31.1 secure-delete
+# required by gnome-base/gnome-keyring-3.34.0::gentoo
+# required by mate-extra/mate-screensaver-1.22.2::gentoo[pam]
+# required by mate-base/mate-1.22::gentoo[extras]
+# required by mate-base/mate (argument)
+>=app-crypt/pinentry-1.1.0-r2 gnome-keyring
+# required by mate-extra/mate-user-share-1.22.1::gentoo
+# required by mate-extra/mate-user-share (argument)
+>=www-servers/apache-2.4.41 apache2_modules_auth_digest
+>=x11-misc/lightdm-1.28.0 audit vala
+# required by sys-auth/sssd-1.16.3-r3::gentoo
+# required by app-admin/sudo-1.8.31::gentoo[sssd]
+# required by app-admin/sudo (argument)
+>=net-nds/openldap-2.4.50 sasl
+# required by app-admin/sudo-1.8.31::gentoo[sssd]
+# required by app-admin/sudo (argument)
+>=sys-auth/sssd-1.16.3-r3 sudo
+# required by sys-auth/sssd-1.16.3-r3::gentoo
+# required by app-admin/sudo-1.8.31::gentoo[sssd]
+# required by app-admin/sudo (argument)
+>=net-dns/bind-tools-9.14.8 gssapi
+# required by sys-auth/sssd-1.16.3-r3::gentoo
+# required by app-admin/sudo-1.8.31::gentoo[sssd]
+# required by app-admin/sudo (argument)
+>=dev-libs/cyrus-sasl-2.1.27-r3 kerberos
+# required by sys-auth/sssd-1.16.3-r3::gentoo
+# required by app-admin/sudo-1.8.31::gentoo[sssd]
+# required by app-admin/sudo (argument)
+>=sys-libs/glibc-2.30-r8 nscd
+>=media-libs/libmediaart-1.9.4 -qt5
+>=app-admin/sudo-1.8.31 gcrypt -libressl offensive sasl skey -pam -sssd -ldap system-digest
+>=media-plugins/gst-plugins-meta-1.14.3 ffmpeg
+<--
+
+#Quinto, dar novamente uma olhada nos flags habilitados para o pacote media-plugins/gst-plugins-meta:
+-->
+sudo equery uses media-plugins/gst-plugins-meta
+
+[ Legend : U - final flag setting for installation]
+[        : I - package is installed with flag     ]
+[ Colors : set, unset                             ]
+ * Found these USE flags for media-plugins/gst-plugins-meta-1.14.3:
+ U I
+ + + X          : Add support for X11
+ + + a52        : Enable support for decoding ATSC A/52 streams used in DVD
+ + + aac        : Enable support for MPEG-4 AAC Audio
+ - - abi_x86_32 : 32-bit (x86) libraries
+ + + alsa       : Add support for media-libs/alsa-lib (Advanced Linux Sound Architecture)
+ + + cdda       : Add Compact Disk Digital Audio (Standard Audio CD) support
+ + + dts        : Enable DTS Coherent Acoustics decoder support
+ - - dv         : Enable support for a codec used by many camcorders
+ - - dvb        : Add support for DVB (Digital Video Broadcasting)
+ + + dvd        : Add support for DVDs
+ + + ffmpeg     : Enable ffmpeg/libav-based audio/video codec support
+ + + flac       : Add support for FLAC: Free Lossless Audio Codec
+ - - http       : Enable http streaming via net-libs/libsoup
+ - - jack       : Add support for the JACK Audio Connection Kit
+ - - lame       : Prefer using LAME libraries for MP3 encoding support
+ - - libass     : SRT/SSA/ASS (SubRip / SubStation Alpha) subtitle support
+ - - libvisual  : Enable visualization effects via media-libs/libvisual
+ - - mms        : Support for Microsoft Media Server (MMS) streams
+ - - modplug    : Add libmodplug support for playing SoundTracker-style music files
+ + + mp3        : Add support for reading mp3 files
+ + + mpeg       : Add libmpeg3 support to various packages
+ + + ogg        : Add support for the Ogg container format (commonly used by Vorbis, Theora and flac)
+ - - opus       : Enable Opus audio codec support
+ - - oss        : Add support for OSS (Open Sound System)
+ - - pulseaudio : Add support for PulseAudio sound server
+ - - taglib     : Enable tagging support with taglib
+ - - theora     : Add support for the Theora Video Compression Codec
+ - - v4l        : Enable support for video4linux (using linux-headers or userspace libv4l libraries)
+ - - vaapi      : Enable Video Acceleration API for hardware decoding
+ - - vcd        : Video CD support
+ + + vorbis     : Add support for the OggVorbis audio codec
+ - - vpx        : Enables vp8 codec support using libvpx, required to play some HTML5 videos
+ - - wavpack    : Add support for wavpack audio compression tools
+ + + x264       : Enable h264 encoding using x264
+
+#Sexto, instalar finalmente o pacote media-plugins/gst-plugins-meta
+-->
+sudo emerge --ask media-plugins/gst-plugins-meta
+<--

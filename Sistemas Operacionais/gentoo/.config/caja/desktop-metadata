@@ -1,0 +1,34 @@
+[directory]
+caja-icon-view-keep-aligned=true
+caja-icon-view-layout-timestamp=1592170927
+
+[Sistema de arquivos root.volume]
+caja-icon-position=64,282
+icon-scale=1
+caja-icon-position-timestamp=1591398336
+
+[home]
+caja-icon-position=64,102
+icon-scale=1
+caja-icon-position-timestamp=1591486389
+
+[trash]
+caja-icon-position=64,202
+icon-scale=1
+caja-icon-position-timestamp=1591486389
+
+[EFI.volume]
+caja-icon-position=64,202
+icon-scale=1
+caja-icon-position-timestamp=1591398336
+
+[computer]
+caja-icon-position=64,22
+icon-scale=1
+caja-icon-position-timestamp=1591486389
+annotation=
+
+[Mint - Home.volume]
+caja-icon-position=64,10
+icon-scale=1
+caja-icon-position-timestamp=1591539499

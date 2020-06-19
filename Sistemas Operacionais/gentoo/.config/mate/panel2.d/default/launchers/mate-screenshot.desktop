@@ -1,0 +1,16 @@
+[Desktop Entry]
+Name=Take Screenshot
+Name[pt_BR]=Capturar imagem da tela
+Comment=Save images of your desktop or individual windows
+Comment[pt_BR]=Salvar imagens da sua área de trabalho ou de janelas individuais
+Exec=mate-screenshot --interactive
+Terminal=false
+Type=Application
+Icon=applets-screenshooter
+StartupNotify=true
+Categories=GTK;Utility;
+Keywords=MATE;screenshot;snapshot;desktop;window;image;
+X-MATE-Bugzilla-Bugzilla=MATE
+X-MATE-Bugzilla-Product=mate-utils
+X-MATE-Bugzilla-Component=screenshot
+X-MATE-Bugzilla-OtherBinaries=mate-panel-screenshot

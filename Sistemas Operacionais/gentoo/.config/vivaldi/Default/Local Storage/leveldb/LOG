@@ -1,0 +1,98 @@
+2020/06/14-21:50:50.036 4044 Reusing MANIFEST /home/nilson/.config/vivaldi/Default/Local Storage/leveldb/MANIFEST-000001
+2020/06/14-21:50:50.036 4044 Recovering log #3
+2020/06/14-21:50:50.037 4044 Reusing old log /home/nilson/.config/vivaldi/Default/Local Storage/leveldb/000003.log 
+2020/06/14-21:56:48.253 6ab3 Level-0 table #5: started
+2020/06/14-21:56:48.288 6ab3 Level-0 table #5: 15655 bytes OK
+2020/06/14-21:56:48.317 6ab3 Delete type=0 #3
+2020/06/14-22:00:04.139 6ab3 Level-0 table #7: started
+2020/06/14-22:00:04.170 6ab3 Level-0 table #7: 16744 bytes OK
+2020/06/14-22:00:04.195 6ab3 Delete type=0 #4
+2020/06/14-22:04:07.363 6ab3 Level-0 table #9: started
+2020/06/14-22:04:07.418 6ab3 Level-0 table #9: 13298 bytes OK
+2020/06/14-22:04:07.444 6ab3 Delete type=0 #6
+2020/06/14-22:05:27.619 6ab3 Level-0 table #11: started
+2020/06/14-22:05:27.640 6ab3 Level-0 table #11: 14381 bytes OK
+2020/06/14-22:05:27.668 6ab3 Delete type=0 #8
+2020/06/14-22:06:41.241 6ab3 Level-0 table #13: started
+2020/06/14-22:06:41.269 6ab3 Level-0 table #13: 10481 bytes OK
+2020/06/14-22:06:41.292 6ab3 Delete type=0 #10
+2020/06/14-22:07:50.265 6ab3 Level-0 table #15: started
+2020/06/14-22:07:50.307 6ab3 Level-0 table #15: 11380 bytes OK
+2020/06/14-22:07:50.332 6ab3 Delete type=0 #12
+2020/06/14-22:07:50.332 6ab3 Compacting 4@0 + 1@1 files
+2020/06/14-22:07:50.366 6ab3 Generated table #16@0: 15 keys, 7060 bytes
+2020/06/14-22:07:50.366 6ab3 Compacted 4@0 + 1@1 files => 7060 bytes
+2020/06/14-22:07:50.390 6ab3 compacted to: files[ 0 1 1 0 0 0 0 ]
+2020/06/14-22:07:50.390 6ab3 Delete type=2 #15
+2020/06/14-22:07:50.390 6ab3 Delete type=2 #7
+2020/06/14-22:07:50.390 6ab3 Delete type=2 #9
+2020/06/14-22:07:50.390 6ab3 Delete type=2 #13
+2020/06/14-22:07:50.390 6ab3 Delete type=2 #11
+2020/06/14-22:09:10.447 6ab3 Level-0 table #18: started
+2020/06/14-22:09:10.487 6ab3 Level-0 table #18: 12705 bytes OK
+2020/06/14-22:09:10.515 6ab3 Delete type=0 #14
+2020/06/14-22:10:25.997 6ab3 Level-0 table #20: started
+2020/06/14-22:10:26.032 6ab3 Level-0 table #20: 13282 bytes OK
+2020/06/14-22:10:26.056 6ab3 Delete type=0 #17
+2020/06/14-22:11:37.174 6ab3 Level-0 table #22: started
+2020/06/14-22:11:37.227 6ab3 Level-0 table #22: 14173 bytes OK
+2020/06/14-22:11:37.254 6ab3 Delete type=0 #19
+2020/06/14-22:12:50.265 6ab3 Level-0 table #24: started
+2020/06/14-22:12:50.296 6ab3 Level-0 table #24: 16283 bytes OK
+2020/06/14-22:12:50.320 6ab3 Delete type=0 #21
+2020/06/14-22:12:50.320 6ab3 Compacting 4@0 + 1@1 files
+2020/06/14-22:12:50.346 6ab3 Generated table #25@0: 22 keys, 10085 bytes
+2020/06/14-22:12:50.346 6ab3 Compacted 4@0 + 1@1 files => 10085 bytes
+2020/06/14-22:12:50.370 6ab3 compacted to: files[ 0 1 1 0 0 0 0 ]
+2020/06/14-22:12:50.370 6ab3 Delete type=2 #18
+2020/06/14-22:12:50.370 6ab3 Delete type=2 #24
+2020/06/14-22:12:50.370 6ab3 Delete type=2 #20
+2020/06/14-22:12:50.370 6ab3 Delete type=2 #22
+2020/06/14-22:12:50.370 6ab3 Delete type=2 #16
+2020/06/14-22:14:06.883 6ab3 Level-0 table #27: started
+2020/06/14-22:14:06.961 6ab3 Level-0 table #27: 17182 bytes OK
+2020/06/14-22:14:06.986 6ab3 Delete type=0 #23
+2020/06/14-22:14:50.265 6ab3 Level-0 table #29: started
+2020/06/14-22:14:50.302 6ab3 Level-0 table #29: 9921 bytes OK
+2020/06/14-22:14:50.332 6ab3 Delete type=0 #26
+2020/06/14-22:15:27.366 6ab3 Level-0 table #31: started
+2020/06/14-22:15:27.402 6ab3 Level-0 table #31: 9239 bytes OK
+2020/06/14-22:15:27.427 6ab3 Delete type=0 #28
+2020/06/14-22:15:27.511 6ab3 Level-0 table #33: started
+2020/06/14-22:15:27.535 6ab3 Level-0 table #33: 9155 bytes OK
+2020/06/14-22:15:27.560 6ab3 Delete type=0 #30
+2020/06/14-22:15:27.560 6ab3 Compacting 4@0 + 1@1 files
+2020/06/14-22:15:27.586 6ab3 Generated table #34@0: 29 keys, 11587 bytes
+2020/06/14-22:15:27.586 6ab3 Compacted 4@0 + 1@1 files => 11587 bytes
+2020/06/14-22:15:27.610 6ab3 compacted to: files[ 0 1 1 0 0 0 0 ]
+2020/06/14-22:15:27.610 6ab3 Delete type=2 #33
+2020/06/14-22:15:27.610 6ab3 Delete type=2 #29
+2020/06/14-22:15:27.610 6ab3 Delete type=2 #25
+2020/06/14-22:15:27.610 6ab3 Delete type=2 #31
+2020/06/14-22:15:27.610 6ab3 Delete type=2 #27
+2020/06/14-22:16:47.511 6ab3 Level-0 table #36: started
+2020/06/14-22:16:47.544 6ab3 Level-0 table #36: 13485 bytes OK
+2020/06/14-22:16:47.568 6ab3 Delete type=0 #32
+2020/06/14-22:17:22.769 6ab3 Level-0 table #38: started
+2020/06/14-22:17:22.808 6ab3 Level-0 table #38: 11321 bytes OK
+2020/06/14-22:17:22.838 6ab3 Delete type=0 #35
+2020/06/14-22:17:58.140 6ab3 Level-0 table #40: started
+2020/06/14-22:17:58.172 6ab3 Level-0 table #40: 11260 bytes OK
+2020/06/14-22:17:58.200 6ab3 Delete type=0 #37
+2020/06/14-22:18:33.143 6ab3 Level-0 table #42: started
+2020/06/14-22:18:33.179 6ab3 Level-0 table #42: 11514 bytes OK
+2020/06/14-22:18:33.203 6ab3 Delete type=0 #39
+2020/06/14-22:18:33.204 6ab3 Compacting 4@0 + 1@1 files
+2020/06/14-22:18:33.238 6ab3 Generated table #43@0: 30 keys, 15691 bytes
+2020/06/14-22:18:33.238 6ab3 Compacted 4@0 + 1@1 files => 15691 bytes
+2020/06/14-22:18:33.262 6ab3 compacted to: files[ 0 1 1 0 0 0 0 ]
+2020/06/14-22:18:33.262 6ab3 Delete type=2 #38
+2020/06/14-22:18:33.262 6ab3 Delete type=2 #40
+2020/06/14-22:18:33.262 6ab3 Delete type=2 #36
+2020/06/14-22:18:33.262 6ab3 Delete type=2 #42
+2020/06/14-22:18:33.262 6ab3 Delete type=2 #34
+2020/06/14-22:19:11.170 6ab3 Level-0 table #45: started
+2020/06/14-22:19:11.202 6ab3 Level-0 table #45: 11788 bytes OK
+2020/06/14-22:19:11.232 6ab3 Delete type=0 #41
+2020/06/14-22:19:20.759 6ab3 Level-0 table #47: started
+2020/06/14-22:19:20.808 6ab3 Level-0 table #47: 12053 bytes OK

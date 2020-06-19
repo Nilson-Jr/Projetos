@@ -1,0 +1,9 @@
+2020/06/14-21:50:50.034 4044 Reusing MANIFEST /home/nilson/.config/vivaldi/Default/Sync Data/LevelDB/MANIFEST-000001
+2020/06/14-21:50:50.034 4044 Recovering log #4
+2020/06/14-21:50:50.035 4044 Reusing old log /home/nilson/.config/vivaldi/Default/Sync Data/LevelDB/000004.log 
+2020/06/14-21:51:25.849 45a0 Level-0 table #8: started
+2020/06/14-21:51:25.906 45a0 Level-0 table #8: 428356 bytes OK
+2020/06/14-21:51:25.936 45a0 Delete type=0 #4
+2020/06/14-22:00:06.098 45a0 Level-0 table #10: started
+2020/06/14-22:00:06.138 45a0 Level-0 table #10: 308572 bytes OK
+2020/06/14-22:00:06.320 45a0 Delete type=0 #7

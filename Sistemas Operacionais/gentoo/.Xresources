@@ -1,0 +1,67 @@
+##### THIS FILE IS BEING CURRENTLY MANAGED BY URXVTCONFIG #####
+##### CHANGES DONE TO THIS FILE MANUALLY MAY AFFECT THE FUNCTIONALITY ######
+##### PROCEED WITH CAUTION! #####
+
+! special colors
+*.foreground:  #e9b96e
+*.background:  #2d3335
+*.cursorColor:  #bfc3bc
+! black
+*.color0:      #000000
+*.color8:      #000000
+! red
+*.color1:      #Cd3f45
+*.color9:      #aa0000
+! green
+*.color2:      #55aa00
+*.color10:     #55aa00
+! yellow/verde claro
+*.color3:      #918c5b
+*.color11:     #6c604c 
+! blue
+*.color4:      #55b5db
+*.color12:     #4372f0
+! magenta
+*.color5:      #ff55ff
+*.color13:     #ff55ff
+! cyan
+*.color6:      #00ffff
+*.color14:     #00ffff
+! white
+*.color7:      #ffffff
+*.color15:     #ffffff
+
+! 256 color space
+!URxvt*color16:                        #db7b55
+!URxvt*color17:                        #8a553f
+!URxvt*color18:                        #8ec43d
+!URxvt*color19:                        #3B758C
+!URxvt*color20:                        #43a5d5
+!URxvt*color21:                        #eeeeee
+
+URxvt*scrollBar:         false
+URxvt*scrollBar_right:   false
+
+URxvt*transparent:       true
+
+URxvt*depth: 32
+URxvt.background: [10]#2d3335
+
+URxvt.font: xft:monospace:pixelsize=16
+URxvt.letterSpace: 0
+
+*antialias:  true
+*autohint:   true
+
+!Cursor e outros
+URxvt.cursorBlink: true
+URxvt.cursorUnderline: true
+
+!Cor de seleção e cor de texo
+!URxvt.highlighTextColor: #424242
+URxvt.highlightColor:     #e2f4c7
+
+!Perl extensions
+URxvt.perl-ext-common: default,matcher
+URxvt.url-launcher: /usr/bin/firefox
+URxvt.matcher.button: 1

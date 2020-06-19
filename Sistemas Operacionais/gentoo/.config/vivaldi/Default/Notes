@@ -1,0 +1,61 @@
+{
+   "checksum": "452e2a0df0a400965fa0fd426fd73d59",
+   "children": [ {
+      "attachments": [ {
+         "checksum": "9W5nX04ih1pjmlWig5TJcXrmL/3C+Y068lEWwT6zXWs=|151067",
+         "content": ""
+      } ],
+      "content": "/etc/init.d/ntpd restart",
+      "date_added": "13236217627906913",
+      "guid": "b492a09a-4c6c-460e-a9d6-4dd8e1125470",
+      "id": "4",
+      "subject": "",
+      "type": "note",
+      "url": "https://forums.gentoo.org/viewtopic-t-799091-start-0.html"
+   }, {
+      "attachments": [ {
+         "checksum": "9W5nX04ih1pjmlWig5TJcXrmL/3C+Y068lEWwT6zXWs=|151067",
+         "content": ""
+      } ],
+      "content": "/etc/init.d/ntpd restart",
+      "date_added": "13236217628801755",
+      "guid": "de222aca-af1f-4847-9183-30c2f1159858",
+      "id": "5",
+      "subject": "",
+      "type": "note",
+      "url": "https://forums.gentoo.org/viewtopic-t-799091-start-0.html"
+   }, {
+      "attachments": [ {
+         "checksum": "9W5nX04ih1pjmlWig5TJcXrmL/3C+Y068lEWwT6zXWs=|151067",
+         "content": ""
+      } ],
+      "content": "/etc/init.d/ntpd restart",
+      "date_added": "13236217628945190",
+      "guid": "6eeb2ff1-6a1c-4fa3-9295-b8ebf444fdf1",
+      "id": "6",
+      "subject": "",
+      "type": "note",
+      "url": "https://forums.gentoo.org/viewtopic-t-799091-start-0.html"
+   }, {
+      "children": [  ],
+      "date_added": "13236645109387307",
+      "guid": "00000000-0000-4000-A000-000000000003",
+      "id": "2",
+      "subject": "Other Notes",
+      "type": "other"
+   }, {
+      "children": [  ],
+      "date_added": "13236645109387308",
+      "guid": "00000000-0000-4000-A000-000000000004",
+      "id": "3",
+      "subject": "Lixeira",
+      "type": "trash"
+   } ],
+   "date_added": "13236645109387306",
+   "guid": "00000000-0000-4000-A000-000000000002",
+   "id": "1",
+   "subject": "Notes",
+   "sync_metadata": "CoEBCgcIs/4NEgE3EgAaWEt3Z2JUZyswSG9FMFZrRnpUNWZZangwL25tQ1BPbk5RZUtOYmJVU20yTG53a3Y4ZnV1ZllyVFI2MGY1eWFPVVRCbG1tYSsvcS9JVGt2V21wWWp6eFB3PT0gASoYeUNxb3haSStMMjltY082T2cyV0xSZz09EroBCAYStQEKHHdDZ1pla0lGWHIyVjdkZWN0aUVzdmNJZllvYz0SQDxDPlA5MnFNTUxjWlpObzFOWUphcDhzOFE9PS82ZWViMmZmMS02YTFjLTRmYTMtOTI5NS1iOGViZjQ0NGZkZjEYACAAKAAwBTiRwtnaqS5AkcLZ2qkuShxINHRuNWJORzl2L0x3dURDVWhvdi9nNDE2aVk9Wh8iHd15cXh0NmIycjUzQk9MM3FaSDBRWUREVXM0NWM9ErkBCAQStAEKHHVlaG9uOTFKQUk2ZFNOcmkvSXBhUkFCajlSaz0SQDxDPlA5MnFNTUxjWlpObzFOWUphcDhzOFE9PS9iNDkyYTA5YS00YzZjLTQ2MGUtYTlkNi00ZGQ4ZTExMjU0NzAYACAAKAAwBziCutnaqS5AgrrZ2qkuShxJRU8rT2lQYXpLYngvQXA1OUNxNnVOYTQrakU9Wh4iHHZwNzRxeDRzRGVDVjJGd2dNTzJnZFhxY2R5cz0SugEIBRK1AQocN1VSRG56Vy8zT2l0K3Q4Zm8rN2hHUUVVTS9zPRJAPEM+UDkycU1NTGNaWk5vMU5ZSmFwOHM4UT09L2RlMjIyYWNhLWFmMWYtNDg0Ny05MTgzLTMwYzJmMTE1OTg1OBgAIAAoADAGOIHB2dqpLkCBwdnaqS5KHHdVZVFLclU2eCtQVkczZXRrRCs2RzNVazRwYz1aHyIdu1lsRmdqMGEyb1dqalM3R0IyWm05Tm9CRkNPWT0SXQgBElkKHDdjKzdQVGlYM3BlcFk0NUF3TGxrNk5XSk9QVT0SDTxTPm1haW5fbm90ZXMYACAAKAAwBDgAQABKHEJiY3czUVluUnhoeHViVXpPQ2VmbWVWVmZRaz1aABJeCAISWgocM08wNE5USUkwM2F0S0tMamo1bjJNNUhUUFhrPRIOPFM+b3RoZXJfbm90ZXMYACAAKAAwAjgAQABKHEJiY3czUVluUnhoeHViVXpPQ2VmbWVWVmZRaz1aABJeCAMSWgocdVNhYjFlUnp4V0VIdjVlTW9oOVB5Vmk0UTFJPRIOPFM+dHJhc2hfbm90ZXMYACAAKAAwAzgAQABKHEJiY3czUVluUnhoeHViVXpPQ2VmbWVWVmZRaz1aAA==",
+   "type": "folder",
+   "version": 1
+}

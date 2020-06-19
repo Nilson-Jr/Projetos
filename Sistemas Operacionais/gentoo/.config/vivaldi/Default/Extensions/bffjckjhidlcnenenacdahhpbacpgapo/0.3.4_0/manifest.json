@@ -1,0 +1,31 @@
+{
+   "author": "Andy Portmen",
+   "background": {
+      "scripts": [ "services.js", "common.js", "existing.js", "cache.js" ]
+   },
+   "default_locale": "en",
+   "description": "__MSG_appDesc__",
+   "homepage_url": "https://add0n.com/country-flags.html",
+   "icons": {
+      "128": "data/icons/128.png",
+      "16": "data/icons/16.png",
+      "19": "data/icons/19.png",
+      "32": "data/icons/32.png",
+      "38": "data/icons/38.png",
+      "48": "data/icons/48.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlWYDdOhxnXoG9gCqcnDDcurOJnvl2NwWTTm76tIqng3Ycio3ucnzxsM/uJurdRZIT9DjW3QrVooXfEWW7NPqmkgYq7AJFigZ36zCnAhFO8kf1P5AZHqSelFMrnhk/del0lBgVu3nN1bWn9RthoR0MWFfkuj+L7jwkigU+9YH+Yb1JBGyyvC+FjUIBDtqAlG/pYSeE8ZhCDom5gB+ypuvlv2iDGnJmVksjgo4ti8pD87leaA1ui8frXBBX+dBJ2nBAB+QQnDcCCU+zqddXh2iOLOVcwYXJdeS+bXjLO+MwIWClW5lPrBo3Dr90v0Vv1+NeQZo+44/W9QfQCssBhseGwIDAQAB",
+   "manifest_version": 2,
+   "name": "Country Flags & IP Whois",
+   "optional_permissions": [ "clipboardWrite", "downloads", "nativeMessaging" ],
+   "options_ui": {
+      "chrome_style": true,
+      "page": "data/options/index.html"
+   },
+   "page_action": {
+
+   },
+   "permissions": [ "storage", "webNavigation", "webRequest", "*://*/*", "contextMenus", "notifications", "alarms" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "0.3.4"
+}
